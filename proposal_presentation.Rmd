@@ -1,0 +1,84 @@
+---
+title: "proposal_presentation"
+author: "Angel Sarmiento"
+date: "10/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F, warning = F)
+```
+
+
+```{r}
+library(here)
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(purrr)
+library(stringr)
+library(DT)
+```
+
+```{r, warning = FALSE, message=FALSE}
+data <- read_csv(here("data/courses-list-fpu.csv"))
+```
+
+
+```{r}
+colnames(data) <- str_replace_all(colnames(data), " |\\/", "_")
+colnames(data) <- str_replace_all(colnames(data), "\\:|\\?|\\_\\(Rendered_no_HTML\\)|\\(s\\)", "")
+
+colnames(data)
+```
+
+```{r}
+# test <- data %>% 
+#   mutate(degree_usage = strsplit(as.character(Degree_Program_Usage), "Bachelor of Science,"))
+#   
+# 
+# test2 <- data %>% tidyr::separate_rows(Degree_Program_Usage, sep = "\\),")
+#   
+#   
+#   
+# test2$Degree_Program_Usage <- test2$Degree_Program_Usage %>% str_replace_all( "Bachelor of Science,|Master of Science,", "") 
+# 
+# 
+# 
+# test2 <- test2 %>% 
+#   filter(!is.na(Degree_Program_Usage) | !grepl(Degree_Program_Usage, "Additional"))
+
+# 
+# %>% 
+#   filter(!grepl("Plan of Study| ", Degree_Program_Usage) | !is.na(Degree_Program_Usage) ) %>% 
+#   str_replace_all(Degree_Program_Usage, "")
+```
+
+```{r}
+data <- data %>% 
+  mutate(Department_Name = ifelse(is.na(Department_Name),"Other", Department_Name))
+```
+
+
+```{r}
+data %>% group_by(Department_Name) %>% 
+  summarise(count = n()) %>% 
+  ggplot(aes(x = reorder(Department_Name, count), y = count,
+             fill=factor(ifelse(Department_Name=="Data Science and Business Analytics","Highlighted","Normal")))) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(name = "area", values=c("#532d8e","#B1B3B5")) +
+  labs(x = "Department Name", y = "", title = "Number of Courses by Department")+
+  theme_minimal()+
+  theme(legend.position = 'none') +
+  coord_flip() 
+  
+```
+
+```{r}
+data %>% select(c(Department_Name, Name, Course_Type, Course_Objectives)) %>% 
+  DT::datatable(options = list( dom = 'Bfrtip',
+    buttons = c('copy')))
+```
+
+
+
