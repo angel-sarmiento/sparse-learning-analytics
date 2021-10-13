@@ -18,6 +18,7 @@ library(readr)
 library(purrr)
 library(stringr)
 library(DT)
+library(tidyr)
 ```
 
 ```{r, warning = FALSE, message=FALSE}
@@ -25,7 +26,7 @@ data <- read_csv(here("data/courses-list-fpu.csv"))
 ```
 
 
-```{r}
+```{r Making the column names stable}
 colnames(data) <- str_replace_all(colnames(data), " |\\/", "_")
 colnames(data) <- str_replace_all(colnames(data), "\\:|\\?|\\_\\(Rendered_no_HTML\\)|\\(s\\)", "")
 
@@ -33,26 +34,51 @@ colnames(data)
 ```
 
 ```{r}
-# test <- data %>% 
-#   mutate(degree_usage = strsplit(as.character(Degree_Program_Usage), "Bachelor of Science,"))
-#   
-# 
-# test2 <- data %>% tidyr::separate_rows(Degree_Program_Usage, sep = "\\),")
-#   
-#   
-#   
-# test2$Degree_Program_Usage <- test2$Degree_Program_Usage %>% str_replace_all( "Bachelor of Science,|Master of Science,", "") 
-# 
-# 
-# 
-# test2 <- test2 %>% 
-#   filter(!is.na(Degree_Program_Usage) | !grepl(Degree_Program_Usage, "Additional"))
+test <- data %>%
+   mutate(degree_usage = strsplit(as.character(Degree_Program_Usage), "Bachelor of Science,"),
+          degree_track = strsplit(as.character(Degree_Program_Usage), "Track, "))
 
-# 
-# %>% 
-#   filter(!grepl("Plan of Study| ", Degree_Program_Usage) | !is.na(Degree_Program_Usage) ) %>% 
-#   str_replace_all(Degree_Program_Usage, "")
+
+ test2 <- data %>% tidyr::separate_rows(Degree_Program_Usage, sep = "\\(Program Description\\),") 
+
+
+ test2 %>% tidyr::separate_rows(Degree_Program_Usage, sep = "\\(")
+
+ test2$Degree_Program_Usage <- test2$Degree_Program_Usage %>% str_replace_all( "Bachelor of Science,|Master of Science,", "")
 ```
+
+
+```{r Working with Degree Programs}
+ftrd_prog <- data %>% mutate(deg = strsplit(as.character(Degree_Program_Usage), ", |,")) 
+
+ftrd_prog <- ftrd_prog %>% 
+  mutate(deg_prog = map(deg, as_tibble)) %>% 
+  unnest(cols = c(deg_prog)) %>% 
+  rename(deg_prog = value)
+
+ftrd_prog%>%
+  filter(!deg_prog == "Bachelor of Science") %>% filter(!deg_prog == "Master of Science") %>% 
+  filter(!deg_prog %in% c("Engine", "E", "Cybe", "Bachel", "Bache", 
+                        "B", "Applied Ma", "Appli", "Additional Florida Requirements", "Environm")) %>% 
+  #  filter(!is.na(Degree_Program_Usage)) %>% filter(!grepl(Degree_Program_Usage, pattern = "Additional")) %>% 
+  # filter(!grepl(Degree_Program_Usage, pattern = "Track -")) %>%
+  # filter(!grepl(Degree_Program_Usage, pattern = "\\(Plan of Study\\)")) %>% 
+  #  filter(!is.na(Degree_Program_Usage)) %>%
+   ggplot(aes(x = deg_prog)) +
+   geom_histogram(stat = "count") +
+  coord_flip()
+```
+
+
+```{r Separating course outlines}
+# This will eventually be its own script
+test <- data %>% 
+  mutate(outlines = strsplit(as.character(Course_Outline), "[\\\r\\\n\\\t]+")) %>% 
+  select(outlines)
+
+```
+
+
 
 ```{r}
 data <- data %>% 
@@ -75,9 +101,16 @@ data %>% group_by(Department_Name) %>%
 ```
 
 ```{r}
-data %>% select(c(Department_Name, Name, Course_Type, Course_Objectives)) %>% 
-  DT::datatable(options = list( dom = 'Bfrtip',
-    buttons = c('copy')))
+
+# data %>% select(c(Department_Name, Name, Course_Type, Course_Objectives)) %>% 
+#   DT::datatable(options = list( dom = 'Bfrtip',
+#     buttons = c('copy')))
+
+```
+
+
+```{r}
+
 ```
 
 
