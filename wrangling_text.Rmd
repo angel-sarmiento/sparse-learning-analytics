@@ -1,0 +1,146 @@
+---
+title: "proposal_presentation"
+author: "Angel Sarmiento"
+date: "10/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F, warning = F)
+```
+
+
+```{r}
+library(here)
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(purrr)
+library(stringr)
+library(DT)
+library(tidyr)
+```
+
+```{r, warning = FALSE, message=FALSE}
+data <- read_csv(here("data/courses-list-fpu.csv"))
+```
+
+
+```{r Making the column names stable}
+colnames(data) <- str_replace_all(colnames(data), " |\\/", "_")
+colnames(data) <- str_replace_all(colnames(data), "\\:|\\?|\\_\\(Rendered_no_HTML\\)|\\(s\\)", "")
+
+colnames(data)
+```
+
+```{r}
+test <- data %>%
+   mutate(degree_usage = strsplit(as.character(Degree_Program_Usage), "Bachelor of Science,"),
+          degree_track = strsplit(as.character(Degree_Program_Usage), "Track, "))
+
+
+ test2 <- data %>% tidyr::separate_rows(Degree_Program_Usage, sep = "\\(Program Description\\),") 
+
+
+ test2 %>% tidyr::separate_rows(Degree_Program_Usage, sep = "\\(")
+
+ test2$Degree_Program_Usage <- test2$Degree_Program_Usage %>% str_replace_all( "Bachelor of Science,|Master of Science,", "")
+```
+
+
+```{r Working with Degree Programs}
+ftrd_prog_in <- data %>% mutate(deg = strsplit(as.character(Degree_Program_Usage), ", |,")) 
+
+ftrd_prog <- ftrd_prog_in %>% 
+  mutate(deg_prog = map(deg, as_tibble)) %>% 
+  unnest(cols = c(deg_prog)) %>% 
+  rename(deg_prog = value)
+```
+
+
+```{r Working with Degree Programs}
+ftrd_prog %>%
+  filter(!deg_prog == "Bachelor of Science") %>% filter(!deg_prog == "Master of Science") %>% 
+  filter(!deg_prog %in% c("Engine", "E", "Cybe", "Bachel", "Bache", 
+                        "B", "Applied Ma", "Appli", "Additional Florida Requirements", "Environm")) %>% 
+  group_by(deg_prog) %>% 
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>% 
+  slice(1:22) %>% 
+  #  filter(!is.na(Degree_Program_Usage)) %>% filter(!grepl(Degree_Program_Usage, pattern = "Additional")) %>% 
+  # filter(!grepl(Degree_Program_Usage, pattern = "Track -")) %>%
+  # filter(!grepl(Degree_Program_Usage, pattern = "\\(Plan of Study\\)")) %>% 
+  #  filter(!is.na(Degree_Program_Usage)) %>%
+   ggplot(aes(x = reorder(deg_prog, count), y = count)) +
+   geom_bar(stat = "identity") +
+  coord_flip()
+```
+
+```{r}
+# Testing to see whether or not uniting course code and number creates a unique enough column for joining
+data_new_code <- data %>% unite("Course_ID", Prefix:Code, sep = "_", remove = TRUE) %>% 
+  distinct(Course_ID, .keep_all = TRUE)
+ 
+# It is mostly unique
+```
+
+
+
+```{r Separating course outlines}
+# Bit of extra regex to filter down the data to the levels that we need
+filtering_string <- regex(paste0("^Week|\\s{2}|^\\s{1}|^Quiz|^Chapter|^Case|^http|Ch.|^Incoterms|Exam|Presentations|www"), ignore_case = TRUE)
+replace_string <- regex(paste0("^\\d{1}\\. |\\d{2}\\. |^Lab \\d{1}. |^Lab \\d{2}. |^[a-z]. |^\\d{1}."), ignore_case = TRUE)
+
+
+# This will eventually be its own script
+outl_df <- data_new_code %>% 
+  mutate(Outlines = strsplit(as.character(Course_Outline), "[\\\r\\\n\\\t]+")) 
+
+main_outl_df <- outl_df %>% tidyr::separate_rows(Outlines, sep = "^[0-9].")  %>% filter(grepl("^\\d{1}\\. |\\d{2}\\. ", Outlines))
+# Getting everything else just in case we need them
+side_outl_df <- outl_df %>% tidyr::separate_rows(Outlines, sep = "^[0-9].") %>% filter(!grepl(paste0("^\\d{1}\\. |\\d{2}\\. "), Outlines)) 
+
+main_outl_df$Outlines <- main_outl_df$Outlines %>% 
+  str_replace_all(replace_string, "")
+
+
+
+side_outl_new <- side_outl_df %>% 
+  filter(!grepl(filtering_string, 
+                Outlines, ignore.case = TRUE)) %>% 
+  filter(!is.na(Outlines))
+  
+  
+side_outl_new$Outlines <- side_outl_new$Outlines %>% str_replace_all(replace_string, "")
+```
+
+```{r}
+# Joining the two dataframes for the outlines
+full_outl <- main_outl_df %>% rbind(side_outl_new)
+write.csv(full_outl, here("data/full_outline_data.csv"))
+```
+
+
+
+```{r}
+data <- data %>% 
+  mutate(Department_Name = ifelse(is.na(Department_Name),"Other", Department_Name))
+
+data %>% group_by(Department_Name) %>% 
+  summarise(count = n()) %>% 
+  ggplot(aes(x = reorder(Department_Name, count), y = count,
+             fill=factor(ifelse(Department_Name=="Data Science and Business Analytics","Highlighted","Normal")))) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(name = "area", values=c("#532d8e","#B1B3B5")) +
+  labs(x = "Department Name", y = "", title = "Number of Courses by Department")+
+  theme_minimal()+
+  theme(legend.position = 'none') +
+  coord_flip() 
+  
+```
+
+
+
+
+
+

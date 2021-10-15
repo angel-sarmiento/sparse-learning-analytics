@@ -49,23 +49,30 @@ test <- data %>%
 
 
 ```{r Working with Degree Programs}
-ftrd_prog <- data %>% mutate(deg = strsplit(as.character(Degree_Program_Usage), ", |,")) 
+ftrd_prog_in <- data %>% mutate(deg = strsplit(as.character(Degree_Program_Usage), ", |,")) 
 
-ftrd_prog <- ftrd_prog %>% 
+ftrd_prog <- ftrd_prog_in %>% 
   mutate(deg_prog = map(deg, as_tibble)) %>% 
   unnest(cols = c(deg_prog)) %>% 
   rename(deg_prog = value)
+```
 
-ftrd_prog%>%
+
+```{r Working with Degree Programs}
+ftrd_prog %>%
   filter(!deg_prog == "Bachelor of Science") %>% filter(!deg_prog == "Master of Science") %>% 
   filter(!deg_prog %in% c("Engine", "E", "Cybe", "Bachel", "Bache", 
                         "B", "Applied Ma", "Appli", "Additional Florida Requirements", "Environm")) %>% 
+  group_by(deg_prog) %>% 
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>% 
+  slice(1:22) %>% 
   #  filter(!is.na(Degree_Program_Usage)) %>% filter(!grepl(Degree_Program_Usage, pattern = "Additional")) %>% 
   # filter(!grepl(Degree_Program_Usage, pattern = "Track -")) %>%
   # filter(!grepl(Degree_Program_Usage, pattern = "\\(Plan of Study\\)")) %>% 
   #  filter(!is.na(Degree_Program_Usage)) %>%
-   ggplot(aes(x = deg_prog)) +
-   geom_histogram(stat = "count") +
+   ggplot(aes(x = reorder(deg_prog, count), y = count)) +
+   geom_bar(stat = "identity") +
   coord_flip()
 ```
 
@@ -75,6 +82,21 @@ ftrd_prog%>%
 test <- data %>% 
   mutate(outlines = strsplit(as.character(Course_Outline), "[\\\r\\\n\\\t]+")) %>% 
   select(outlines)
+
+test2 <- test %>% tidyr::separate_rows(outlines, sep = "^[0-9].") 
+
+
+  
+test3 <- test2 %>% filter(grepl("^\\d{1}\\. |\\d{2}\\. ", outlines))
+# Getting everything else just in case we need them
+side_test <- test2 %>% filter(!grepl("^\\d{1}\\. |\\d{2}\\. ", outlines)) 
+
+test3$outlines <- test3$outlines %>% 
+  str_replace_all("^\\d{1}\\. |\\d{2}\\. ", "")
+
+side_new <- side_test %>% 
+  filter(!grepl("^Week|\\s{2}|^\\s{1}|^Quiz|^Chapter|^Case|^http|Ch.|^Incoterms|Exam|Presentations", 
+                outlines, ignore.case = TRUE))
 
 ```
 
@@ -109,9 +131,6 @@ data %>% group_by(Department_Name) %>%
 ```
 
 
-```{r}
-
-```
 
 
 
