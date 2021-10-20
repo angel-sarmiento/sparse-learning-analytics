@@ -19,19 +19,55 @@ library(purrr)
 library(stringr)
 library(DT)
 library(tidyr)
+library(tidytext)
+library(tm)
 ```
 
 ```{r, warning = FALSE, message=FALSE}
+source(here("transform_course_data.R"))
 data <- read_csv(here("data/courses-list-fpu.csv"))
 ```
 
 
-```{r Making the column names stable}
-colnames(data) <- str_replace_all(colnames(data), " |\\/", "_")
-colnames(data) <- str_replace_all(colnames(data), "\\:|\\?|\\_\\(Rendered_no_HTML\\)|\\(s\\)", "")
 
-colnames(data)
+```{r Running the function to get the transformed data}
+full_outl <- transform_course_data(data)
 ```
+
+
+```{r Creating the Document-Term Matrix, unigram}
+data(stop_words)
+terms <- full_outl %>% 
+  select(Course_ID, Outlines) %>% 
+  unnest_tokens("outline_word", Outlines) %>% 
+  filter(!outline_word %in% stop_words$word) %>% 
+  filter(!grepl("^[0-9]", outline_word))
+  
+unigram_dtm <- terms %>% 
+  count(Course_ID, outline_word, sort = TRUE) %>% 
+  cast_dtm(Course_ID, outline_word, n) %>% 
+  tidy()
+```
+
+```{r Creating the document-term matrix, bigram}
+terms_bigram <- full_outl %>% 
+  select(Course_ID, Outlines) %>% 
+  unnest_tokens("outline_word", Outlines, token = "ngrams", n = 2) %>% 
+  separate(outline_word, c("word1", "word2")) %>% 
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!grepl("^[0-9]", word1)) %>% 
+  filter(!word2 %in% stop_words$word) %>% 
+  filter(!grepl("^[0-9]", word2)) %>% 
+  unite(outline_bigram, word1, word2, sep = " ") %>% 
+  filter(!outline_bigram == "NA NA")
+
+bigram_dtm <- terms_bigram %>% 
+  count(Course_ID, outline_bigram, sort = TRUE) %>% 
+  cast_dtm(Course_ID, outline_bigram, n) %>% 
+  tidy()
+```
+
+
 
 ```{r}
 test <- data %>%
@@ -75,51 +111,6 @@ ftrd_prog %>%
    geom_bar(stat = "identity") +
   coord_flip()
 ```
-
-```{r}
-# Testing to see whether or not uniting course code and number creates a unique enough column for joining
-data_new_code <- data %>% unite("Course_ID", Prefix:Code, sep = "_", remove = TRUE) %>% 
-  distinct(Course_ID, .keep_all = TRUE)
- 
-# It is mostly unique
-```
-
-
-
-```{r Separating course outlines}
-# Bit of extra regex to filter down the data to the levels that we need
-filtering_string <- regex(paste0("^Week|\\s{2}|^\\s{1}|^Quiz|^Chapter|^Case|^http|Ch.|^Incoterms|Exam|Presentations|www"), ignore_case = TRUE)
-replace_string <- regex(paste0("^\\d{1}\\. |\\d{2}\\. |^Lab \\d{1}. |^Lab \\d{2}. |^[a-z]. |^\\d{1}."), ignore_case = TRUE)
-
-
-# This will eventually be its own script
-outl_df <- data_new_code %>% 
-  mutate(Outlines = strsplit(as.character(Course_Outline), "[\\\r\\\n\\\t]+")) 
-
-main_outl_df <- outl_df %>% tidyr::separate_rows(Outlines, sep = "^[0-9].")  %>% filter(grepl("^\\d{1}\\. |\\d{2}\\. ", Outlines))
-# Getting everything else just in case we need them
-side_outl_df <- outl_df %>% tidyr::separate_rows(Outlines, sep = "^[0-9].") %>% filter(!grepl(paste0("^\\d{1}\\. |\\d{2}\\. "), Outlines)) 
-
-main_outl_df$Outlines <- main_outl_df$Outlines %>% 
-  str_replace_all(replace_string, "")
-
-
-
-side_outl_new <- side_outl_df %>% 
-  filter(!grepl(filtering_string, 
-                Outlines, ignore.case = TRUE)) %>% 
-  filter(!is.na(Outlines))
-  
-  
-side_outl_new$Outlines <- side_outl_new$Outlines %>% str_replace_all(replace_string, "")
-```
-
-```{r}
-# Joining the two dataframes for the outlines
-full_outl <- main_outl_df %>% rbind(side_outl_new)
-write.csv(full_outl, here("data/full_outline_data.csv"))
-```
-
 
 
 ```{r}
