@@ -1,5 +1,5 @@
 ---
-title: "proposal_presentation"
+title: "Preliminary Text Data Cleaning/Analysis"
 author: "Angel Sarmiento"
 date: "10/5/2021"
 output: html_document
@@ -10,7 +10,8 @@ knitr::opts_chunk$set(echo = TRUE, message = F, warning = F)
 ```
 
 
-```{r}
+
+```{r Library Import}
 library(here)
 library(ggplot2)
 library(dplyr)
@@ -21,9 +22,12 @@ library(DT)
 library(tidyr)
 library(tidytext)
 library(tm)
+library(FactoMineR)
+library(factoextra)
+library(plotly)
 ```
 
-```{r, warning = FALSE, message=FALSE}
+```{r Scripts and data, warning = FALSE, message=FALSE}
 source(here("transform_course_data.R"))
 data <- read_csv(here("data/courses-list-fpu.csv"))
 ```
@@ -31,9 +35,11 @@ data <- read_csv(here("data/courses-list-fpu.csv"))
 
 
 ```{r Running the function to get the transformed data}
-full_outl <- transform_course_data(data)
+full_outl <- transform_course_data(data) %>% 
+  filter(Department_Name == "Data Science and Business Analytics")
 ```
 
+# Creating the Document-Term Matrices
 
 ```{r Creating the Document-Term Matrix, unigram}
 data(stop_words)
@@ -63,11 +69,89 @@ terms_bigram <- full_outl %>%
 
 bigram_dtm <- terms_bigram %>% 
   count(Course_ID, outline_bigram, sort = TRUE) %>% 
-  cast_dtm(Course_ID, outline_bigram, n) %>% 
-  tidy()
+  cast_dtm(Course_ID, outline_bigram, n)
+```
+
+# Multiple Correspondence Analysis
+
+Correspondence Analysis and viewing the Eigenvalues
+
+```{r MCA Bigram DTM}
+bigram_matrix <- as.matrix(bigram_dtm)
+
+bigram_ca <- FactoMineR::CA(bigram_matrix, graph = F)
+# Check eigenvalues
+bigram_ca$eig
 ```
 
 
+
+
+## Visualization for Dimensions 1 and 2:
+
+```{r MCA Bigram DTM}
+options(ggrepel.max.overlaps = Inf)
+factoextra::fviz_ca_biplot(bigram_ca, 
+                           geom.row = c("text"),
+                           geom.col = c("point", "text"),
+                           row.var = "steelblue",
+                           labelsize = 2,
+                           select.col = list(contrib = 100),
+                           select.row = list(contrib = 30),
+                           alpha.row = 0.3, repel = T,
+                           title = "DSBA Curriculum - Biplot")
+
+ggsave('dsba_biplot_dim12.png', dpi = 300)
+
+```
+
+
+## Dimensions 3 and 4
+
+```{r}
+factoextra::fviz_ca_biplot(bigram_ca, 
+                           geom.row = c("point","text"),
+                           geom.col = c("point", "text"),
+                           row.var = "steelblue",
+                           labelsize = 2,
+                           select.col = list(contrib = 80),
+                           select.row = list(contrib = 30),
+                           alpha.row = 0.3, repel = T,
+                           axes = c(3, 4),
+                           title = "DSBA Curriculum - Biplot")
+
+# ggsave('dsba_biplot_dim34.png', dpi = 300)
+```
+
+
+## Visualization with smaller Matrix
+
+```{r}
+my_row_sums <- rowSums(bigram_matrix) %>% as.numeric()
+rows_to_remove <- which(my_row_sums < median(my_row_sums))
+
+mini_df <- bigram_matrix[-rows_to_remove, ]
+```
+
+```{r}
+mini_ca <- FactoMineR::CA(mini_df,
+                          graph = F)
+
+ggplotly(factoextra::fviz_ca_biplot(mini_ca, 
+                           geom.row = c("arrow", "text"), 
+                           alpha.row = 0.3,
+                           geom.col = c("point"),
+                           row.var = "steelblue",
+                           select.col = list(contrib = 10000),
+                           select.row = list(contrib = 80)))
+
+```
+
+
+
+
+
+# Cleaning the Degree Programs 
 
 ```{r}
 test <- data %>%
