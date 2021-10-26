@@ -2,7 +2,11 @@
 title: "Preliminary Text Data Cleaning/Analysis"
 author: "Angel Sarmiento"
 date: "10/5/2021"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
@@ -39,21 +43,7 @@ full_outl <- transform_course_data(data) %>%
   filter(Department_Name == "Data Science and Business Analytics")
 ```
 
-# Creating the Document-Term Matrices
-
-```{r Creating the Document-Term Matrix, unigram}
-data(stop_words)
-terms <- full_outl %>% 
-  select(Course_ID, Outlines) %>% 
-  unnest_tokens("outline_word", Outlines) %>% 
-  filter(!outline_word %in% stop_words$word) %>% 
-  filter(!grepl("^[0-9]", outline_word))
-  
-unigram_dtm <- terms %>% 
-  count(Course_ID, outline_word, sort = TRUE) %>% 
-  cast_dtm(Course_ID, outline_word, n) %>% 
-  tidy()
-```
+# MCA with Bigrams {.tabset} 
 
 ```{r Creating the document-term matrix, bigram}
 terms_bigram <- full_outl %>% 
@@ -72,22 +62,18 @@ bigram_dtm <- terms_bigram %>%
   cast_dtm(Course_ID, outline_bigram, n)
 ```
 
-# Multiple Correspondence Analysis
-
-Correspondence Analysis and viewing the Eigenvalues
-
-```{r MCA Bigram DTM}
+```{r MCA Checking eigenvalues}
 bigram_matrix <- as.matrix(bigram_dtm)
 
 bigram_ca <- FactoMineR::CA(bigram_matrix, graph = F)
 # Check eigenvalues
-bigram_ca$eig
+# bigram_ca$eig
 ```
 
 
 
 
-## Visualization for Dimensions 1 and 2:
+## Dimensions 1 and 2
 
 ```{r MCA Bigram DTM}
 options(ggrepel.max.overlaps = Inf)
@@ -101,7 +87,7 @@ factoextra::fviz_ca_biplot(bigram_ca,
                            alpha.row = 0.3, repel = T,
                            title = "DSBA Curriculum - Biplot")
 
-ggsave('dsba_biplot_dim12.png', dpi = 300)
+# ggsave('dsba_biplot_dim12.png', dpi = 300)
 
 ```
 
@@ -114,8 +100,8 @@ factoextra::fviz_ca_biplot(bigram_ca,
                            geom.col = c("point", "text"),
                            row.var = "steelblue",
                            labelsize = 2,
-                           select.col = list(contrib = 80),
-                           select.row = list(contrib = 30),
+                           select.col = list(cos2 = .10),
+                           # select.row = list(cos2 = .12),
                            alpha.row = 0.3, repel = T,
                            axes = c(3, 4),
                            title = "DSBA Curriculum - Biplot")
@@ -123,8 +109,15 @@ factoextra::fviz_ca_biplot(bigram_ca,
 # ggsave('dsba_biplot_dim34.png', dpi = 300)
 ```
 
+```{r}
+factoextra::fviz_eig(bigram_ca, addlabels = TRUE, ylim = c(0, 100))
+```
 
-## Visualization with smaller Matrix
+
+
+# MCA with Reduced Bigrams Matrix {.tabset}
+
+## Reduced Matrix: Dims 1 and 2
 
 ```{r}
 my_row_sums <- rowSums(bigram_matrix) %>% as.numeric()
@@ -137,81 +130,97 @@ mini_df <- bigram_matrix[-rows_to_remove, ]
 mini_ca <- FactoMineR::CA(mini_df,
                           graph = F)
 
-ggplotly(factoextra::fviz_ca_biplot(mini_ca, 
-                           geom.row = c("arrow", "text"), 
-                           alpha.row = 0.3,
-                           geom.col = c("point"),
+factoextra::fviz_ca_biplot(mini_ca, 
+                           geom.row = c("point","text"),
+                           geom.col = c("point", "text"),
                            row.var = "steelblue",
-                           select.col = list(contrib = 10000),
-                           select.row = list(contrib = 80)))
+                           labelsize = 2,
+                           select.col = list(contrib = 80),
+                           select.row = list(contrib = 30),
+                           alpha.row = 0.3, repel = T,
+                           axes = c(1, 2),
+                           title = "DSBA Curriculum - Biplot")
 
 ```
 
 
 
-
-
-# Cleaning the Degree Programs 
+## Reduced Matrix: Dims 3 and 4
 
 ```{r}
-test <- data %>%
-   mutate(degree_usage = strsplit(as.character(Degree_Program_Usage), "Bachelor of Science,"),
-          degree_track = strsplit(as.character(Degree_Program_Usage), "Track, "))
+factoextra::fviz_ca_biplot(mini_ca, 
+                           geom.row = c("point","text"),
+                           geom.col = c("point", "text"),
+                           row.var = "steelblue",
+                           labelsize = 2,
+                           select.col = list(contrib = 80),
+                           select.row = list(contrib = 30),
+                           alpha.row = 0.3, repel = T,
+                           axes = c(3, 4),
+                           title = "DSBA Curriculum - Biplot")
+```
 
 
- test2 <- data %>% tidyr::separate_rows(Degree_Program_Usage, sep = "\\(Program Description\\),") 
 
-
- test2 %>% tidyr::separate_rows(Degree_Program_Usage, sep = "\\(")
-
- test2$Degree_Program_Usage <- test2$Degree_Program_Usage %>% str_replace_all( "Bachelor of Science,|Master of Science,", "")
+```{r}
+# test <- data %>%
+#    mutate(degree_usage = strsplit(as.character(Degree_Program_Usage), "Bachelor of Science,"),
+#           degree_track = strsplit(as.character(Degree_Program_Usage), "Track, "))
+# 
+# 
+#  test2 <- data %>% tidyr::separate_rows(Degree_Program_Usage, sep = "\\(Program Description\\),") 
+# 
+# 
+#  test2 %>% tidyr::separate_rows(Degree_Program_Usage, sep = "\\(")
+# 
+#  test2$Degree_Program_Usage <- test2$Degree_Program_Usage %>% str_replace_all( "Bachelor of Science,|Master of Science,", "")
 ```
 
 
 ```{r Working with Degree Programs}
-ftrd_prog_in <- data %>% mutate(deg = strsplit(as.character(Degree_Program_Usage), ", |,")) 
-
-ftrd_prog <- ftrd_prog_in %>% 
-  mutate(deg_prog = map(deg, as_tibble)) %>% 
-  unnest(cols = c(deg_prog)) %>% 
-  rename(deg_prog = value)
+# ftrd_prog_in <- full_outl %>% mutate(deg = strsplit(as.character(Degree_Program_Usage), ", |,")) 
+# 
+# ftrd_prog <- ftrd_prog_in %>% 
+#   mutate(deg_prog = map(deg, as_tibble)) %>% 
+#   unnest(cols = c(deg_prog)) %>% 
+#   rename(deg_prog = value)
 ```
 
 
-```{r Working with Degree Programs}
-ftrd_prog %>%
-  filter(!deg_prog == "Bachelor of Science") %>% filter(!deg_prog == "Master of Science") %>% 
-  filter(!deg_prog %in% c("Engine", "E", "Cybe", "Bachel", "Bache", 
-                        "B", "Applied Ma", "Appli", "Additional Florida Requirements", "Environm")) %>% 
-  group_by(deg_prog) %>% 
-  summarise(count = n()) %>%
-  arrange(desc(count)) %>% 
-  slice(1:22) %>% 
-  #  filter(!is.na(Degree_Program_Usage)) %>% filter(!grepl(Degree_Program_Usage, pattern = "Additional")) %>% 
-  # filter(!grepl(Degree_Program_Usage, pattern = "Track -")) %>%
-  # filter(!grepl(Degree_Program_Usage, pattern = "\\(Plan of Study\\)")) %>% 
-  #  filter(!is.na(Degree_Program_Usage)) %>%
-   ggplot(aes(x = reorder(deg_prog, count), y = count)) +
-   geom_bar(stat = "identity") +
-  coord_flip()
+```{r Working with Degree Programs 2}
+# ftrd_prog %>%
+#   filter(!deg_prog == "Bachelor of Science") %>% filter(!deg_prog == "Master of Science") %>% 
+#   filter(!deg_prog %in% c("Engine", "E", "Cybe", "Bachel", "Bache", 
+#                         "B", "Applied Ma", "Appli", "Additional Florida Requirements", "Environm")) %>% 
+#   group_by(deg_prog) %>% 
+#   summarise(count = n()) %>%
+#   arrange(desc(count)) %>% 
+#   slice(1:22) %>% 
+#   #  filter(!is.na(Degree_Program_Usage)) %>% filter(!grepl(Degree_Program_Usage, pattern = "Additional")) %>% 
+#   # filter(!grepl(Degree_Program_Usage, pattern = "Track -")) %>%
+#   # filter(!grepl(Degree_Program_Usage, pattern = "\\(Plan of Study\\)")) %>% 
+#   #  filter(!is.na(Degree_Program_Usage)) %>%
+#    ggplot(aes(x = reorder(deg_prog, count), y = count)) +
+#    geom_bar(stat = "identity") +
+#   coord_flip()
 ```
 
 
 ```{r}
-data <- data %>% 
-  mutate(Department_Name = ifelse(is.na(Department_Name),"Other", Department_Name))
-
-data %>% group_by(Department_Name) %>% 
-  summarise(count = n()) %>% 
-  ggplot(aes(x = reorder(Department_Name, count), y = count,
-             fill=factor(ifelse(Department_Name=="Data Science and Business Analytics","Highlighted","Normal")))) +
-  geom_bar(stat = "identity") +
-  scale_fill_manual(name = "area", values=c("#532d8e","#B1B3B5")) +
-  labs(x = "Department Name", y = "", title = "Number of Courses by Department")+
-  theme_minimal()+
-  theme(legend.position = 'none') +
-  coord_flip() 
-  
+# data_pg <- full_outl %>% 
+#   mutate(Department_Name = ifelse(is.na(Department_Name),"Other", Department_Name))
+# 
+# data_pg %>% group_by(Department_Name) %>% 
+#   summarise(count = n()) %>% 
+#   ggplot(aes(x = reorder(Department_Name, count), y = count,
+#              fill=factor(ifelse(Department_Name=="Data Science and Business Analytics","Highlighted","Normal")))) +
+#   geom_bar(stat = "identity") +
+#   scale_fill_manual(name = "area", values=c("#532d8e","#B1B3B5")) +
+#   labs(x = "Department Name", y = "", title = "Number of Courses by Department")+
+#   theme_minimal()+
+#   theme(legend.position = 'none') +
+#   coord_flip() 
+#   
 ```
 
 
