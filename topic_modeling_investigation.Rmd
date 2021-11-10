@@ -16,26 +16,31 @@ This is an investigation on the use of Topic Modeling on the course catalog at F
 
 ```{r Libraries}
 library(tidytext)
+library(textmineR)
 library(broom)
 library(tidyr)
 library(dplyr)
 library(ggplot2)
 library(here)
+library(stringr)
 library(readr, quietly = T)
 
+set.seed(543)
 source(here("transform_course_data.R"))
 data <- read_csv(here("data/courses-list-fpu.csv"))
 ```
 
 ```{r Running the function to get the transformed data}
-data <- clean_columns(data)
-
+filter_regex = ""
+replace_regex = ""
 filtering_string <- regex(paste0("^Week|\\s{2}|^\\s{1}|^Quiz|^Chapter|^Case|^http|Ch.|^Incoterms|Exam|Presentations|www|", 
                                    filter_regex), 
                             ignore_case = TRUE)
 replace_string <- regex(paste0("^\\d{1}\\. |\\d{2}\\. |^Lab \\d{1}. |^Lab \\d{2}. |^[a-z]. |^\\d{1}.|", 
                                replace_regex), 
                         ignore_case = TRUE)
+
+data <- clean_columns(data, "Course_Description") 
 
 
 # This will eventually be its own script
@@ -74,9 +79,9 @@ terms_bigram <- full_outl %>%
   select(Course_ID, new_col) %>% 
   unnest_tokens("desc_word", new_col, token = "ngrams", n = 2) %>% 
   separate(desc_word, c("word1", "word2")) %>% 
-  filter(!word1 %in% stop_words$word) %>%
+  filter(!word1 %in% c(stop_words$word, "research", "scientific", "paper", "guest", "topics", "based", "covers", "current", "toolset", "current", "student", "unknown", "senior", "relevant", "term")) %>%
   filter(!grepl("^[0-9]", word1)) %>% 
-  filter(!word2 %in% stop_words$word) %>% 
+  filter(!word2 %in% c(stop_words$word, "include", "information", "sources", "project", "term", "base")) %>% 
   filter(!grepl("^[0-9]", word2)) %>% 
   unite(desc_bigram, word1, word2, sep = " ") %>% 
   filter(!desc_bigram == "NA NA")
@@ -88,8 +93,8 @@ bigram_dtm <- terms_bigram %>%
 
 ```{r}
 library(topicmodels)
-# k = 6 for the number of concentrations
-bigram_lda <- LDA(bigram_dtm, k = 6)
+# k = 5 for the number of concentrations
+bigram_lda <- LDA(bigram_dtm, k = 5, method = "Gibbs", control=list(iter = 500, verbose = 25, alpha = 0.2))
 
 course_topics <- tidy(bigram_lda, matrix = "beta")
 course_topics
@@ -97,8 +102,9 @@ course_topics
 
 ```{r Topic Bigram Probabilities}
 course_top_terms <- course_topics %>% 
+  filter(!is.na(term)) %>% 
   group_by(topic) %>%
-  slice_max(beta, n = 10) %>% 
+  slice_max(beta, n = 9) %>% 
   ungroup() %>%
   arrange(topic, -beta)
 
@@ -114,18 +120,43 @@ course_top_terms %>%
 course_docs <- tidy(bigram_lda, matrix = "gamma")
 course_docs
 
-course_top_docs <- course_docs %>% 
+course_docs %>% 
   group_by(topic) %>%
-  slice_max(gamma, n = 10) %>% 
+  slice_max(gamma, n = 5) %>% 
   ungroup() %>%
   arrange(topic, -gamma)
 
-course_top_docs %>% 
-  mutate(term = reorder_within(term, gamma, topic)) %>%
-  ggplot(aes(gamma, term, fill = factor(topic))) +
-  geom_col(show.legend = FALSE) +
-  facet_wrap(~ topic, scales = "free") +
-  scale_y_reordered()
+# course_top_docs %>%
+#   mutate(document = reorder_within(document, gamma, topic)) %>%
+#   ggplot(aes(gamma, document, fill = factor(document))) +
+#   geom_col(show.legend = FALSE) +
+#   facet_wrap(~ topic, scales = "free") +
+#   scale_y_reordered()
 
 ```
+
+
+TODO: DISTANCE MATRIX CREATION AND ANALYSES WITH MDS
+There are some distance metrics I would like to try  
+- Hellinger Distance 
+- Cosine Similarity (Isn't this done when using MCA/CA?)
+- Jaccard Similary
+- Sorensen-Dice Similarity
+
+
+# Testing Distance metrics 
+
+## Hellinger Distance 
+
+```{r}
+CalcHellingerDist(course_topics$beta)
+```
+
+
+
+
+
+
+
+
 
