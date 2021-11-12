@@ -27,6 +27,10 @@ library(dplyr)
 library(ggplot2)
 library(here)
 library(stringr)
+library(DT)
+library(proxy)
+library(smacof)
+library(ggrepel)
 library(readr, quietly = T)
 
 set.seed(543)
@@ -69,16 +73,12 @@ side_outl_new <- side_outl_df %>%
 side_outl_new$new_col <- side_outl_new$new_col %>% str_replace_all(replace_string, "")
 # Joining the two dataframes for the new_col
 full_outl <- main_outl_df %>% rbind(side_outl_new)
-```
 
-
-```{r Filtering to the department}
+# Filtering to the department
 full_outl <- full_outl %>% 
   filter(Department_Name == "Data Science and Business Analytics")
-```
 
-
-```{r}
+# Getting bigrams
 terms_bigram <- full_outl %>% 
   select(Course_ID, new_col) %>% 
   unnest_tokens("desc_word", new_col, token = "ngrams", n = 2) %>% 
@@ -93,24 +93,66 @@ terms_bigram <- full_outl %>%
 bigram_dtm <- terms_bigram %>% 
   count(Course_ID, desc_bigram, sort = TRUE) %>% 
   cast_dtm(Course_ID, desc_bigram, n)
+
+# List of course_id matched to course names 
+course_list <- split(full_outl$Name, full_outl$Course_ID)
 ```
 
 # LDA 
 
-The first test is an LDA model with `k = 5` using the Gibbs method.
+The first test is an LDA model with `k = 5` using the Gibbs method. 
 
 ```{r}
 library(topicmodels)
 # k = 5 for the number of concentrations
 bigram_lda <- LDA(bigram_dtm, k = 5, method = "Gibbs", control=list(iter = 500, verbose = 25, alpha = 0.2))
+```
 
+## Probabilities {.tabset}
+
+### Topic-Term Probabilities (Betas)
+
+```{r topic term probabilities}
 course_topics <- tidy(bigram_lda, matrix = "beta")
-course_topics
+course_topics %>% 
+  datatable()
+```
+
+
+### Document-Topic Probabilities (Gamma)
+
+```{r Document Topic Probabilities}
+course_docs <- tidy(bigram_lda, matrix = "gamma")
+
+course_docs %>% 
+  group_by(topic) %>%
+  slice_max(gamma, n = 5) %>% 
+  ungroup() %>%
+  arrange(topic, -gamma) %>% 
+  datatable()
+
+# course_top_docs %>%
+#   mutate(document = reorder_within(document, gamma, topic)) %>%
+#   ggplot(aes(gamma, document, fill = factor(document))) +
+#   geom_col(show.legend = FALSE) +
+#   facet_wrap(~ topic, scales = "free") +
+#   scale_y_reordered()
+
 ```
 
 ## Can it identify the five different Concentrations?
 
-```{r Topic Bigram Probabilities}
+The five concentrations are as follows:   
+- Logistics & Supply Chain Management  
+- Intelligent Mobility  
+- Quantitative Economics and Econometrics  
+- Big Data Analytics  
+- Health Systems Engineering  
+
+The LDA model we have seems to be able to spread the topics pretty well. But there seems to be a shortcoming in its ability to separate one concentration from one another. I believe this is due to the fact that a lot of the DSBA curriculum overlaps in many ways. 
+
+
+```{r Topic Bigram Probabilities, fig.height=8, fig.width=8}
 course_top_terms <- course_topics %>% 
   filter(!is.na(term)) %>% 
   group_by(topic) %>%
@@ -123,41 +165,20 @@ course_top_terms %>%
   ggplot(aes(beta, term, fill = factor(topic))) +
   geom_col(show.legend = FALSE) +
   facet_wrap(~ topic, scales = "free") +
-  scale_y_reordered()
-```
-
-## Document-Topic Probabilities (Gamma)
-
-```{r Document Topic Probabilities}
-course_docs <- tidy(bigram_lda, matrix = "gamma")
-
-course_docs %>% 
-  group_by(topic) %>%
-  slice_max(gamma, n = 5) %>% 
-  ungroup() %>%
-  arrange(topic, -gamma)
-
-# course_top_docs %>%
-#   mutate(document = reorder_within(document, gamma, topic)) %>%
-#   ggplot(aes(gamma, document, fill = factor(document))) +
-#   geom_col(show.legend = FALSE) +
-#   facet_wrap(~ topic, scales = "free") +
-#   scale_y_reordered()
-
+  scale_y_reordered() 
 ```
 
 
 
 
 
-
-# Testing Distance metrics {.tabset}  
+# Distance metrics {.tabset}  
 
 There are some distance metrics I would like to try  
-- Hellinger Distance   
+- Hellinger Distance (In-progress)
 - Cosine Similarity (Isn't this done when using MCA/CA?)  
-- Jaccard Similary  
-- Sorensen-Dice Similarity  
+- Jaccard Similary  (In-progress)
+- Sorensen-Dice Similarity  (In-progress)
 
 
 ## Euclidean Distance 
@@ -283,22 +304,86 @@ delta_lnr %>%
 ```
 
 
-# Distance Metrics Discussion
+### Distance Metrics Discussion
 
 So just from these alone, it seems as though Cosine similarity is the best way to move forward. These other distance metrics seem really sensitive to word counts causing these larger clusters where a majority of the courses. Perhaps we could use something other than the counts themselves? There are some other distance metrics I would like to try but need time to find an existing implementation or to implement them myself in R. 
 
 
-# Testing MDS {.tabset}
+# MDS {.tabset}
+
+All MDS implementations are nonmetric (for ordinal data). 
 
 ## MDS with Euclidean Distance  
 
+```{r Euclidean distance MDS}
+library(plotly)
+mds_euc <- bigram_dtm %>% 
+  stats::dist(method = "euclidean") %>% 
+  # t() %>% 
+  mds(type = "ordinal")
+
+ggplot() +
+  geom_point(data = as_tibble(mds_euc$conf), aes(x = D1, y = D2)) +
+  geom_text(as_tibble(mds_euc$conf), mapping = aes(x = -D1,y= -D2), label = rownames(bigram_dtm)) +
+  theme_minimal() +
+  labs(title = "MDS with Euclidean Distance Matrix")
+```
+
+## MDS with Manhattan Distance
+
 ```{r}
-dist_euc %>% 
-  pivot_wider(item1, item2, values_from = distance)  %>% 
-  tibble::column_to_rownames('item1') %>% 
-  kmeans(5)
+mds_man <- bigram_dtm %>% 
+  stats::dist(method = "manhattan") %>% 
+  # t() %>% 
+  mds(type = "ordinal")
+
+ggplot() +
+  geom_point(data = as_tibble(mds_man$conf), aes(x = D1, y = D2)) +
+  geom_text(as_tibble(mds_man$conf), mapping = aes(x = -D1,y= -D2), label = rownames(bigram_dtm)) +
+  theme_minimal() +
+  geom_text_repel() +
+  labs(title = "MDS with Manhattan Distance Matrix")
+```
+
+## MDS with 1 - Cosine Similarity 
+
+```{r}
+library(slam)
+cosine_dist_mat <- 1 - crossprod_simple_triplet_matrix(t(bigram_dtm))/(sqrt(col_sums(t(bigram_dtm)^2) %*% t(col_sums(t(bigram_dtm)^2))))
+
+mds_cos <- cosine_dist_mat %>% 
+  # t() %>% 
+  mds(type = "ordinal")
+
+
+ggplot() +
+  geom_point(data = as_tibble(mds_cos$conf), aes(x = D1, y = D2)) +
+  geom_text(as_tibble(mds_cos$conf), mapping = aes(x = -D1,y= -D2), label = rownames(bigram_dtm)) +
+  geom_text_repel() +
+  theme_minimal() +
+  labs(title = "MDS with 1 - Cosine Similarity")
+
 ```
 
 
+## MDS with 1 - Jaccard Similarity 
+
+Still trying to figure this one out
+
+```{r}
+# mds_jac <- bigram_dtm %>% 
+#   dist(method = "Jaccard", pairwise = TRUE) %>% 
+#   # t() %>% 
+#   mds(type = "ordinal")
+# 
+# 
+# ggplot() +
+#   geom_point(data = as_tibble(mds_jac$conf), aes(x = D1, y = D2)) +
+#   geom_text(as_tibble(mds_jac$conf), mapping = aes(x = -D1,y= -D2), label = rownames(bigram_dtm)) +
+#   geom_text_repel() +
+#   theme_minimal() +
+#   labs(title = "MDS with 1 - Jaccard Similarity")
+
+```
 
 
