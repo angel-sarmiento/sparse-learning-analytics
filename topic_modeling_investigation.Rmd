@@ -2,7 +2,11 @@
 title: "Topic Modeling Investigation on FPU Data"
 author: "Angel Sarmiento"
 date: "11/2/2021"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
@@ -40,7 +44,7 @@ replace_string <- regex(paste0("^\\d{1}\\. |\\d{2}\\. |^Lab \\d{1}. |^Lab \\d{2}
                                replace_regex), 
                         ignore_case = TRUE)
 
-data <- clean_columns(data, "Course_Description") 
+data <- clean_columns(data) 
 
 
 # This will eventually be its own script
@@ -68,7 +72,7 @@ full_outl <- main_outl_df %>% rbind(side_outl_new)
 ```
 
 
-```{r Running the function to get the transformed data}
+```{r Filtering to the department}
 full_outl <- full_outl %>% 
   filter(Department_Name == "Data Science and Business Analytics")
 ```
@@ -91,6 +95,10 @@ bigram_dtm <- terms_bigram %>%
   cast_dtm(Course_ID, desc_bigram, n)
 ```
 
+# LDA 
+
+The first test is an LDA model with `k = 5` using the Gibbs method.
+
 ```{r}
 library(topicmodels)
 # k = 5 for the number of concentrations
@@ -99,6 +107,8 @@ bigram_lda <- LDA(bigram_dtm, k = 5, method = "Gibbs", control=list(iter = 500, 
 course_topics <- tidy(bigram_lda, matrix = "beta")
 course_topics
 ```
+
+## Can it identify the five different Concentrations?
 
 ```{r Topic Bigram Probabilities}
 course_top_terms <- course_topics %>% 
@@ -116,9 +126,10 @@ course_top_terms %>%
   scale_y_reordered()
 ```
 
+## Document-Topic Probabilities (Gamma)
+
 ```{r Document Topic Probabilities}
 course_docs <- tidy(bigram_lda, matrix = "gamma")
-course_docs
 
 course_docs %>% 
   group_by(topic) %>%
@@ -136,26 +147,157 @@ course_docs %>%
 ```
 
 
-TODO: DISTANCE MATRIX CREATION AND ANALYSES WITH MDS
+
+
+
+
+# Testing Distance metrics {.tabset}  
+
 There are some distance metrics I would like to try  
-- Hellinger Distance 
-- Cosine Similarity (Isn't this done when using MCA/CA?)
-- Jaccard Similary
-- Sorensen-Dice Similarity
+- Hellinger Distance   
+- Cosine Similarity (Isn't this done when using MCA/CA?)  
+- Jaccard Similary  
+- Sorensen-Dice Similarity  
 
 
-# Testing Distance metrics 
-
-## Hellinger Distance 
+## Euclidean Distance 
 
 ```{r}
-CalcHellingerDist(course_topics$beta)
+library(ggplot2)
+library(MASS)
+library(ggrepel)
+library(widyr)
+library(igraph)
+library(ggraph)
+ptsize <- 2
+legends <- TRUE
+dist_lmt <- 3.4
+
+
+dist_euc <- bigram_dtm %>% 
+  tidy() %>% 
+  pairwise_dist(item = document, feature = term, value = count, method = "euclidean") 
+
+dist_euc %>%
+  filter(distance < dist_lmt) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = distance), show.legend = legends) +
+  geom_node_point(color = "lightblue", size = ptsize) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void()+ 
+  labs(title = "Distance Plot: Euclidean")
+```
+
+
+## Manhattan Distance
+
+```{r}
+dist_manh <- bigram_dtm %>% 
+  tidy() %>% 
+  pairwise_dist(item = document, feature = term, value = count, method = "manhattan") 
+
+dist_manh %>%
+  filter(distance < 15) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = distance), show.legend = legends) +
+  geom_node_point(color = "lightblue", size = ptsize) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void() + 
+  labs(title = "Distance Plot: Manhattan")
+```
+
+## Cosine Similarity
+
+
+```{r}
+sim_cos <- bigram_dtm %>% 
+  tidy() %>% 
+  pairwise_similarity(item = document, feature = term, value = count)
+
+sim_cos %>% 
+  filter(similarity > 0.1) %>% 
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = similarity), show.legend = legends) +
+  geom_node_point(color = "lightblue", size = ptsize) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void() + 
+  labs(title = "Cosine Similarity Plot")
+
 ```
 
 
 
 
+```{r}
+# mds <- bigram_dtm %>% 
+#   # as.matrix() %>%  
+#   dist.matrix(method = "jaccard") %>% 
+#   isoMDS() %>%
+#   .$points %>% 
+#   as_tibble()
+# colnames(mds) <- c("Dim.1", "Dim.2")
+#   # Plot MDS
+# ggplot(mds, aes(x = "Dim.1", y = "Dim.2", label = rownames(as.matrix(bigram_dtm)))) +
+#   geom_point() +
+#   geom_text_repel()
+```
 
+
+## Delta Distance: Burrow's Delta 
+
+```{r}
+delta_brw <- bigram_dtm %>% 
+  tidy() %>% 
+  pairwise_delta(item = document, feature = term, value = count, method = "burrows")
+
+delta_brw %>% 
+  filter(delta < 0.1) %>% 
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = delta), show.legend = legends) +
+  geom_node_point(color = "lightblue", size = ptsize) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void() + 
+  labs(title = "Burrows Delta")
+```
+
+## Delta Distance: Linear Delta 
+
+```{r}
+delta_lnr <- bigram_dtm %>% 
+  tidy() %>% 
+  pairwise_delta(item = document, feature = term, value = count, method = "argamon")
+
+delta_lnr %>% 
+  filter(delta < 0.029) %>% 
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = delta), show.legend = legends) +
+  geom_node_point(color = "lightblue", size = ptsize) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void() + 
+  labs(title = "Argamon's Linear Delta")
+```
+
+
+# Distance Metrics Discussion
+
+So just from these alone, it seems as though Cosine similarity is the best way to move forward. These other distance metrics seem really sensitive to word counts causing these larger clusters where a majority of the courses. Perhaps we could use something other than the counts themselves? There are some other distance metrics I would like to try but need time to find an existing implementation or to implement them myself in R. 
+
+
+# Testing MDS {.tabset}
+
+## MDS with Euclidean Distance  
+
+```{r}
+dist_euc %>% 
+  pivot_wider(item1, item2, values_from = distance)  %>% 
+  tibble::column_to_rownames('item1') %>% 
+  kmeans(5)
+```
 
 
 
