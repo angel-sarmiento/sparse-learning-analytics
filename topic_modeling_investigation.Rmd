@@ -31,6 +31,14 @@ library(DT)
 library(proxy)
 library(smacof)
 library(ggrepel)
+# library(MASS)
+library(stringdist)
+library(widyr)
+library(igraph)
+library(ggraph)
+ptsize <- 2
+legends <- TRUE
+dist_lmt <- 3.4
 library(readr, quietly = T)
 
 set.seed(543)
@@ -78,9 +86,10 @@ full_outl <- main_outl_df %>% rbind(side_outl_new)
 full_outl <- full_outl %>% 
   filter(Department_Name == "Data Science and Business Analytics")
 
+
 # Getting bigrams
 terms_bigram <- full_outl %>% 
-  select(Course_ID, new_col) %>% 
+  select(c(Course_ID, new_col)) %>% 
   unnest_tokens("desc_word", new_col, token = "ngrams", n = 2) %>% 
   separate(desc_word, c("word1", "word2")) %>% 
   filter(!word1 %in% c(stop_words$word, "research", "scientific", "paper", "guest", "topics", "based", "covers", "current", "toolset", "current", "student", "unknown", "senior", "relevant", "term")) %>%
@@ -140,7 +149,7 @@ course_docs %>%
 
 ```
 
-## Can it identify the five different Concentrations?
+## Can it identify the five different Concentrations? {.tabset}
 
 The five concentrations are as follows:   
 - Logistics & Supply Chain Management  
@@ -172,6 +181,7 @@ course_top_terms %>%
 
 
 
+
 # Distance metrics {.tabset}  
 
 There are some distance metrics I would like to try  
@@ -184,17 +194,6 @@ There are some distance metrics I would like to try
 ## Euclidean Distance 
 
 ```{r}
-library(ggplot2)
-library(MASS)
-library(ggrepel)
-library(widyr)
-library(igraph)
-library(ggraph)
-ptsize <- 2
-legends <- TRUE
-dist_lmt <- 3.4
-
-
 dist_euc <- bigram_dtm %>% 
   tidy() %>% 
   pairwise_dist(item = document, feature = term, value = count, method = "euclidean") 
@@ -238,32 +237,16 @@ sim_cos <- bigram_dtm %>%
   pairwise_similarity(item = document, feature = term, value = count)
 
 sim_cos %>% 
-  filter(similarity > 0.1) %>% 
+  mutate(distance = 1 - similarity) %>% 
+  filter(distance < 0.02) %>% 
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
-  geom_edge_link(aes(edge_alpha = similarity), show.legend = legends) +
+  geom_edge_link(aes(edge_alpha = distance), show.legend = legends) +
   geom_node_point(color = "lightblue", size = ptsize) +
   geom_node_text(aes(label = name), repel = TRUE) +
   theme_void() + 
-  labs(title = "Cosine Similarity Plot")
+  labs(title = "1 - Cosine Similarity Plot: Bigrams")
 
-```
-
-
-
-
-```{r}
-# mds <- bigram_dtm %>% 
-#   # as.matrix() %>%  
-#   dist.matrix(method = "jaccard") %>% 
-#   isoMDS() %>%
-#   .$points %>% 
-#   as_tibble()
-# colnames(mds) <- c("Dim.1", "Dim.2")
-#   # Plot MDS
-# ggplot(mds, aes(x = "Dim.1", y = "Dim.2", label = rownames(as.matrix(bigram_dtm)))) +
-#   geom_point() +
-#   geom_text_repel()
 ```
 
 
@@ -303,15 +286,91 @@ delta_lnr %>%
   labs(title = "Argamon's Linear Delta")
 ```
 
+# Distance metrics with full course descriptions {.tabset}  
 
-### Distance Metrics Discussion
+This is the same as the graphs above, but using the full course descriptions by: 
+- Getting each word individually  
+- removing the stop words (a, the, and)  
+- Rejoining all of the descriptions together  
+- Computing the distance matrices based on the full descriptions
 
-So just from these alone, it seems as though Cosine similarity is the best way to move forward. These other distance metrics seem really sensitive to word counts causing these larger clusters where a majority of the courses. Perhaps we could use something other than the counts themselves? There are some other distance metrics I would like to try but need time to find an existing implementation or to implement them myself in R. 
+
+```{r}
+# Doing what I said above
+course_full_desc <- full_outl %>% 
+  select(c(Course_ID, new_col)) %>% 
+  unnest_tokens("word", new_col) %>% 
+  filter(!word %in% stop_words$word) %>% 
+  filter(!grepl("[0-9]", word)) %>% 
+  group_by(Course_ID) %>% 
+  summarise(text = str_c(word, collapse = " ")) %>% 
+  ungroup()
+  
+```
+
+
+
+## Cosine Similarity
+
+
+```{r}
+cos_mat <- stringdistmatrix(course_full_desc$text, course_full_desc$text, useNames = FALSE, method = "cosine") %>% 
+  as.matrix()
+
+colnames(cos_mat) <- course_full_desc$Course_ID
+rownames(cos_mat) <- course_full_desc$Course_ID
+
+cos_course <- reshape2::melt(cos_mat)[reshape2::melt(upper.tri(cos_mat))$value,]
+
+colnames(cos_course) <- c("Term1", "Term2", "distance")
+
+
+cos_course %>% 
+  filter(distance < 0.02) %>% 
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = distance), show.legend = legends) +
+  geom_node_point(color = "lightblue", size = ptsize) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void() + 
+  labs(title = "1 - Cosine Similarity Plot: Full Desc.")
+
+```
+
+
+## Jaccard Similarity
+
+
+```{r}
+jac_mat <- stringdistmatrix(course_full_desc$text, course_full_desc$text, useNames = FALSE, method = "jaccard") %>% 
+  as.matrix()
+
+colnames(jac_mat) <- course_full_desc$Course_ID
+rownames(jac_mat) <- course_full_desc$Course_ID
+
+jac_course <- reshape2::melt(jac_mat)[reshape2::melt(upper.tri(jac_mat))$value,]
+
+colnames(jac_course) <- c("Term1", "Term2", "distance")
+
+
+jac_course %>% 
+  filter(distance < 0.04) %>% 
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = distance), show.legend = legends) +
+  geom_node_point(color = "lightblue", size = ptsize) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void() + 
+  labs(title = "1 - Jaccard Similarity Plot: Full Desc.")
+
+```
+
 
 
 # MDS {.tabset}
 
 All MDS implementations are nonmetric (for ordinal data). 
+
 
 ## MDS with Euclidean Distance  
 
@@ -386,4 +445,36 @@ Still trying to figure this one out
 
 ```
 
+# MDS with Course Descriptions {.tabset}
+
+## MDS with 1 - Cosine Similarity 
+
+```{r}
+mds_cos_mat <- cos_mat %>% 
+  mds(type = "ordinal")
+
+ ggplot() +
+  geom_point(data = as_tibble(mds_cos_mat$conf), aes(x = D1, y = D2)) +
+  geom_text(as_tibble(mds_cos_mat$conf), mapping = aes(x = -D1,y= -D2), label = rownames(cos_mat)) +
+  geom_text_repel() +
+  theme_minimal() +
+  labs(title = "MDS with 1 - Cosine Similarity")
+
+```
+
+
+## MDS with 1 - Jaccard Similarity 
+
+```{r}
+mds_jac_mat <- jac_mat %>% 
+  mds(type = "ordinal")
+
+ ggplot() +
+  geom_point(data = as_tibble(mds_jac_mat$conf), aes(x = D1, y = D2)) +
+  geom_text(as_tibble(mds_jac_mat$conf), mapping = aes(x = -D1,y= -D2), label = rownames(jac_mat)) +
+  geom_text_repel() +
+  theme_minimal() +
+  labs(title = "MDS with 1 - Jaccard Similarity")
+
+```
 
