@@ -228,7 +228,7 @@ dist_manh %>%
   labs(title = "Distance Plot: Manhattan")
 ```
 
-## Cosine Similarity
+## Cosine Distance
 
 
 ```{r}
@@ -285,6 +285,9 @@ delta_lnr %>%
   theme_void() + 
   labs(title = "Argamon's Linear Delta")
 ```
+
+
+
 
 # Distance metrics with full course descriptions {.tabset}  
 
