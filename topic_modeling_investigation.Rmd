@@ -173,8 +173,13 @@ course_top_terms %>%
   mutate(term = reorder_within(term, beta, topic)) %>%
   ggplot(aes(beta, term, fill = factor(topic))) +
   geom_col(show.legend = FALSE) +
-  facet_wrap(~ topic, scales = "free") +
+  facet_wrap(~ topic, scales = "free") + 
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
+  
   scale_y_reordered() 
+
+ggsave("img/lda.png", dpi = 300)
 ```
 
 
@@ -332,11 +337,13 @@ cos_course %>%
   filter(distance < 0.02) %>% 
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
-  geom_edge_link(aes(edge_alpha = distance), show.legend = legends) +
+  geom_edge_link(aes(edge_alpha = distance), show.legend = FALSE) +
   geom_node_point(color = "lightblue", size = ptsize) +
   geom_node_text(aes(label = name), repel = TRUE) +
   theme_void() + 
   labs(title = "1 - Cosine Similarity Plot: Full Desc.")
+
+ggsave("img/cos.png", dpi = 300)
 
 ```
 
@@ -360,12 +367,13 @@ jac_course %>%
   filter(distance < 0.04) %>% 
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
-  geom_edge_link(aes(edge_alpha = distance), show.legend = legends) +
+  geom_edge_link(aes(edge_alpha = distance), show.legend = FALSE) +
   geom_node_point(color = "lightblue", size = ptsize) +
   geom_node_text(aes(label = name), repel = TRUE) +
   theme_void() + 
   labs(title = "1 - Jaccard Similarity Plot: Full Desc.")
 
+ggsave("img/jac.png", dpi = 300)
 ```
 
 
@@ -456,13 +464,22 @@ Still trying to figure this one out
 mds_cos_mat <- cos_mat %>% 
   mds(type = "ordinal")
 
- ggplot() +
-  geom_point(data = as_tibble(mds_cos_mat$conf), aes(x = D1, y = D2)) +
-  geom_text(as_tibble(mds_cos_mat$conf), mapping = aes(x = -D1,y= -D2), label = rownames(cos_mat)) +
+
+
+
+ggplot() +
+  geom_point(data = as_tibble(mds_cos_mat$conf), aes(x = D1, y = D2, colour = D2 > 0.5)) +
+  scale_colour_manual(values = setNames(c('#532d8e','grey'),c(T, F))) +
+  scale_alpha_manual(values = c(1, 0.01)) +
+  geom_text(as_tibble(mds_cos_mat$conf), mapping = aes(
+    x = -D1, y = -D2, color = D2 < -0.5, label = paste(rownames(cos_mat))), alpha = .7) +
   geom_text_repel() +
   theme_minimal() +
-  labs(title = "MDS with 1 - Cosine Similarity")
+  labs(title = "MDS with 1 - Cosine Similarity") +
+  theme(legend.position = "")
 
+ggsave("img/cos_mds.png", dpi = 300) 
+ 
 ```
 
 
@@ -472,12 +489,18 @@ mds_cos_mat <- cos_mat %>%
 mds_jac_mat <- jac_mat %>% 
   mds(type = "ordinal")
 
- ggplot() +
-  geom_point(data = as_tibble(mds_jac_mat$conf), aes(x = D1, y = D2)) +
-  geom_text(as_tibble(mds_jac_mat$conf), mapping = aes(x = -D1,y= -D2), label = rownames(jac_mat)) +
+ggplot() +
+  geom_point(data = as_tibble(mds_jac_mat$conf), aes(x = D1, y = D2, colour = D2 > 0.5 | D2 < -0.55)) +
+  scale_colour_manual(values = setNames(c('#532d8e','grey'),c(T, F))) +
+  scale_alpha_manual(values = c(1, 0.01)) +
+  geom_text(as_tibble(mds_jac_mat$conf), mapping = aes(
+    x = -D1, y = -D2, color = D2 < -0.5  | D2 > 0.55, label = paste(rownames(jac_mat))), alpha = .7) +
   geom_text_repel() +
   theme_minimal() +
-  labs(title = "MDS with 1 - Jaccard Similarity")
+  labs(title = "MDS with 1 - Jaccard Similarity") +
+  theme(legend.position = "")
 
+ggsave("img/jac_mds.png", dpi = 300) 
+ 
 ```
 

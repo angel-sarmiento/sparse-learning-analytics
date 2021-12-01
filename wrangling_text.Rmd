@@ -34,12 +34,18 @@ library(plotly)
 ```{r Scripts and data, warning = FALSE, message=FALSE}
 source(here("transform_course_data.R"))
 data <- read_csv(here("data/courses-list-fpu.csv"))
+
+if(!dir.exists(here("img/"))) {
+  dir.create(here("img/"))
+}
 ```
 
 
 
 ```{r Running the function to get the transformed data}
-full_outl <- transform_course_data(data) %>% 
+full_outl <- data %>% 
+  clean_columns() %>% 
+  transform_course_data(data) %>% 
   filter(Department_Name == "Data Science and Business Analytics")
 ```
 
@@ -47,8 +53,8 @@ full_outl <- transform_course_data(data) %>%
 
 ```{r Creating the document-term matrix, bigram}
 terms_bigram <- full_outl %>% 
-  select(Course_ID, Outlines) %>% 
-  unnest_tokens("outline_word", Outlines, token = "ngrams", n = 2) %>% 
+  select(Course_ID, new_col) %>% 
+  unnest_tokens("outline_word", new_col, token = "ngrams", n = 2) %>% 
   separate(outline_word, c("word1", "word2")) %>% 
   filter(!word1 %in% stop_words$word) %>%
   filter(!grepl("^[0-9]", word1)) %>% 
@@ -81,13 +87,15 @@ factoextra::fviz_ca_biplot(bigram_ca,
                            geom.row = c("text"),
                            geom.col = c("point", "text"),
                            row.var = "steelblue",
+                           col.row = "black",
+                           col.col = "steelblue",
                            labelsize = 2,
                            select.col = list(contrib = 100),
                            select.row = list(contrib = 30),
                            alpha.row = 0.3, repel = T,
                            title = "DSBA Curriculum - Biplot")
 
-# ggsave('dsba_biplot_dim12.png', dpi = 300)
+ggsave('img/mca_bp_1.png', dpi = 300)
 
 ```
 
@@ -99,6 +107,8 @@ factoextra::fviz_ca_biplot(bigram_ca,
                            geom.row = c("point","text"),
                            geom.col = c("point", "text"),
                            row.var = "steelblue",
+                           col.row = "black",
+                           col.col = "steelblue",
                            labelsize = 2,
                            select.col = list(cos2 = .10),
                            # select.row = list(cos2 = .12),
@@ -106,7 +116,7 @@ factoextra::fviz_ca_biplot(bigram_ca,
                            axes = c(3, 4),
                            title = "DSBA Curriculum - Biplot")
 
-# ggsave('dsba_biplot_dim34.png', dpi = 300)
+ggsave('img/mca_bp_2.png', dpi = 300)
 ```
 
 ```{r}
@@ -134,12 +144,16 @@ factoextra::fviz_ca_biplot(mini_ca,
                            geom.row = c("point","text"),
                            geom.col = c("point", "text"),
                            row.var = "steelblue",
+                           col.row = "black",
+                           col.col = "steelblue",
                            labelsize = 2,
                            select.col = list(contrib = 80),
                            select.row = list(contrib = 30),
                            alpha.row = 0.3, repel = T,
                            axes = c(1, 2),
                            title = "DSBA Curriculum - Biplot")
+
+ggsave('img/mca_bp_3.png', dpi = 300)
 
 ```
 
@@ -152,12 +166,17 @@ factoextra::fviz_ca_biplot(mini_ca,
                            geom.row = c("point","text"),
                            geom.col = c("point", "text"),
                            row.var = "steelblue",
+                           col.row = "black",
+                           col.col = "steelblue",
                            labelsize = 2,
                            select.col = list(contrib = 80),
                            select.row = list(contrib = 30),
                            alpha.row = 0.3, repel = T,
                            axes = c(3, 4),
                            title = "DSBA Curriculum - Biplot")
+
+ggsave('img/mca_bp_4.png', dpi = 300)
+
 ```
 
 
