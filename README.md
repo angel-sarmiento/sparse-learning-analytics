@@ -1,4 +1,4 @@
-# sparfa-learning-analytics
+# sparse-learning-analytics
 A repository for final research project for my Master's Degree. 
 
 # Introduction
