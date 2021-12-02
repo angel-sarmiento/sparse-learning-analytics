@@ -1,5 +1,5 @@
 ---
-title: "Topic Modeling Investigation on FPU Data"
+title: "Topic Modeling Investigation on FPU Data: `r params$department`"
 author: "Angel Sarmiento"
 date: "11/2/2021"
 output: 
@@ -7,10 +7,18 @@ output:
     toc: true
     toc_float: true
     code_folding: hide
+params:
+  department: 
+    label: "Department"
+    value: "Computer Science"
+    choices: 
+    - "Data Science and Business Analytics"
+    - "Mechanical Engineering and Environmental Engineering"
+    - "Computer Science"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, error = FALSE)
 ```
 
 # Introduction
@@ -42,7 +50,7 @@ dist_lmt <- 3.4
 library(readr, quietly = T)
 
 set.seed(543)
-source(here("transform_course_data.R"))
+source(here("scripts/functions/transform_course_data.R"))
 data <- read_csv(here("data/courses-list-fpu.csv"))
 ```
 
@@ -84,7 +92,9 @@ full_outl <- main_outl_df %>% rbind(side_outl_new)
 
 # Filtering to the department
 full_outl <- full_outl %>% 
-  filter(Department_Name == "Data Science and Business Analytics")
+  filter(Department_Name == params$department)
+  # filter(Department_Name == "Computer Science")
+  # filter(Department_Name == "Data Science and Business Analytics")
 
 
 # Getting bigrams
@@ -114,7 +124,7 @@ The first test is an LDA model with `k = 5` using the Gibbs method.
 ```{r}
 library(topicmodels)
 # k = 5 for the number of concentrations
-bigram_lda <- LDA(bigram_dtm, k = 5, method = "Gibbs", control=list(iter = 500, verbose = 25, alpha = 0.2))
+bigram_lda <- LDA(bigram_dtm, k = ifelse(params$department == "Computer Science", 6, 5), method = "Gibbs", control=list(iter = 500, verbose = 25, alpha = 0.2))
 ```
 
 ## Probabilities {.tabset}
@@ -243,7 +253,7 @@ sim_cos <- bigram_dtm %>%
 
 sim_cos %>% 
   mutate(distance = 1 - similarity) %>% 
-  filter(distance < 0.02) %>% 
+  filter(distance < ifelse(params$department == "Computer Science", 0.9, 0.02)) %>% 
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
   geom_edge_link(aes(edge_alpha = distance), show.legend = legends) +
@@ -255,7 +265,7 @@ sim_cos %>%
 ```
 
 
-## Delta Distance: Burrow's Delta 
+## Burrow's Delta 
 
 ```{r}
 delta_brw <- bigram_dtm %>% 
@@ -273,7 +283,7 @@ delta_brw %>%
   labs(title = "Burrows Delta")
 ```
 
-## Delta Distance: Linear Delta 
+## Linear Delta 
 
 ```{r}
 delta_lnr <- bigram_dtm %>% 
@@ -312,7 +322,8 @@ course_full_desc <- full_outl %>%
   filter(!grepl("[0-9]", word)) %>% 
   group_by(Course_ID) %>% 
   summarise(text = str_c(word, collapse = " ")) %>% 
-  ungroup()
+  ungroup() %>% 
+  filter(!is.na(text))
   
 ```
 
@@ -460,19 +471,16 @@ Still trying to figure this one out
 
 ## MDS with 1 - Cosine Similarity 
 
-```{r}
+```{r, error = FALSE}
 mds_cos_mat <- cos_mat %>% 
   mds(type = "ordinal")
-
-
-
 
 ggplot() +
   geom_point(data = as_tibble(mds_cos_mat$conf), aes(x = D1, y = D2, colour = D2 > 0.5)) +
   scale_colour_manual(values = setNames(c('#532d8e','grey'),c(T, F))) +
   scale_alpha_manual(values = c(1, 0.01)) +
   geom_text(as_tibble(mds_cos_mat$conf), mapping = aes(
-    x = -D1, y = -D2, color = D2 < -0.5, label = paste(rownames(cos_mat))), alpha = .7) +
+    x = -D1, y = -D2, color = D2 < -0.5, label = paste(rownames(mds_cos_mat$conf))), alpha = .7) +
   geom_text_repel() +
   theme_minimal() +
   labs(title = "MDS with 1 - Cosine Similarity") +
@@ -494,7 +502,7 @@ ggplot() +
   scale_colour_manual(values = setNames(c('#532d8e','grey'),c(T, F))) +
   scale_alpha_manual(values = c(1, 0.01)) +
   geom_text(as_tibble(mds_jac_mat$conf), mapping = aes(
-    x = -D1, y = -D2, color = D2 < -0.5  | D2 > 0.55, label = paste(rownames(jac_mat))), alpha = .7) +
+    x = -D1, y = -D2, color = D2 < -0.5  | D2 > 0.55, label = paste(rownames(mds_jac_mat$conf))), alpha = .7) +
   geom_text_repel() +
   theme_minimal() +
   labs(title = "MDS with 1 - Jaccard Similarity") +

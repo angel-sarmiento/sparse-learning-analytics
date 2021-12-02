@@ -1,5 +1,5 @@
 ---
-title: "Preliminary Text Data Cleaning/Analysis"
+title: "Preliminary Text Data Cleaning/Analysis: `r params$department`"
 author: "Angel Sarmiento"
 date: "10/5/2021"
 output: 
@@ -7,6 +7,14 @@ output:
     toc: true
     toc_float: true
     code_folding: hide
+params:
+  department: 
+    label: "Department"
+    value: "Computer Science"
+    choices: 
+    - "Data Science and Business Analytics"
+    - "Mechanical Engineering and Environmental Engineering"
+    - "Computer Science"
 ---
 
 ```{r setup, include=FALSE}
@@ -32,7 +40,7 @@ library(plotly)
 ```
 
 ```{r Scripts and data, warning = FALSE, message=FALSE}
-source(here("transform_course_data.R"))
+source(here("scripts/functions/transform_course_data.R"))
 data <- read_csv(here("data/courses-list-fpu.csv"))
 
 if(!dir.exists(here("img/"))) {
@@ -46,7 +54,7 @@ if(!dir.exists(here("img/"))) {
 full_outl <- data %>% 
   clean_columns() %>% 
   transform_course_data(data) %>% 
-  filter(Department_Name == "Data Science and Business Analytics")
+  filter(Department_Name == params$department)
 ```
 
 # MCA with Bigrams {.tabset} 
@@ -180,10 +188,7 @@ ggsave('img/mca_bp_4.png', dpi = 300)
 ```
 
 
-```{r sfa start}
-library(SparseFactorAnalysis)
-sfa(bigram_dtm)
-```
+
 
 
 # Misc Analyses
