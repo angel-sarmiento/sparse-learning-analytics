@@ -102,7 +102,7 @@ terms_bigram <- full_outl %>%
   select(c(Course_ID, new_col)) %>% 
   unnest_tokens("desc_word", new_col, token = "ngrams", n = 2) %>% 
   separate(desc_word, c("word1", "word2")) %>% 
-  filter(!word1 %in% c(stop_words$word, "research", "scientific", "paper", "guest", "topics", "based", "covers", "current", "toolset", "current", "student", "unknown", "senior", "relevant", "term")) %>%
+  filter(!word1 %in% c(stop_words$word, "research", "scientific", "paper", "guest", "topics", "based", "covers", "current", "toolset", "current", "student", "unknown", "senior", "relevant", "term", "skills")) %>%
   filter(!grepl("^[0-9]", word1)) %>% 
   filter(!word2 %in% c(stop_words$word, "include", "information", "sources", "project", "term", "base")) %>% 
   filter(!grepl("^[0-9]", word2)) %>% 
