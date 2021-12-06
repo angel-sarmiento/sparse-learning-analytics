@@ -1,0 +1,60 @@
+This is BibTeX, Version 0.99d (TeX Live 2021)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: apacite.bst
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=200001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: Bibliography/project-proposal.bib
+apacite.bst [2013/07/21 v6.03 APA bibliography style]
+Warning--No journal in barbu_data_nodate
+Warning--No journal in hilliger_evaluating_2019
+Warning--No journal in lan_sparse_nodate
+You've used 11 entries,
+            6951 wiz_defined-function locations,
+            1345 strings with 12901 characters,
+and the built_in function-call counts, 21677 in all, are:
+= -- 2627
+> -- 198
+< -- 978
++ -- 1062
+- -- 22
+* -- 1425
+:= -- 3878
+add.period$ -- 45
+call.type$ -- 11
+change.case$ -- 170
+chr.to.int$ -- 0
+cite$ -- 25
+duplicate$ -- 636
+empty$ -- 894
+format.name$ -- 343
+if$ -- 4107
+int.to.chr$ -- 0
+int.to.str$ -- 33
+missing$ -- 0
+newline$ -- 307
+num.names$ -- 90
+pop$ -- 348
+preamble$ -- 1
+purify$ -- 50
+quote$ -- 0
+skip$ -- 1399
+stack$ -- 0
+substring$ -- 1172
+swap$ -- 366
+text.length$ -- 34
+text.prefix$ -- 0
+top$ -- 1
+type$ -- 944
+warning$ -- 3
+while$ -- 122
+width$ -- 0
+write$ -- 386
+(There were 3 warnings)

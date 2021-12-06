@@ -1,0 +1,81 @@
+%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   Thesis template by Youssif Al-Nashif
+%
+%   May 2020
+%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt]{report}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{Styles/thesis-v1.0}
+
+\usepackage{hyperref}
+\usepackage{apacite}
+
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=R,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+
+%---- Set Thesis Name
+\newcommand{\thesisTitle}{Data-Driven STEM Curriculum Design and Education with Association Graphs and Unsupervised Learning Techniques}
+
+            
+%---- Set Thesis by
+\newcommand{\thesisBy}{Angel J. Sarmiento}
+
+%---- Degree Department
+\newcommand{\thesisDegreeDepartment}{Data Science and Business Analytics}
+
+
+%---- Thesis Semester Year
+\newcommand{\thesisDate}{2021}
+
+%---- First Committee Member
+\newcommand{\thesisComitteeFirstMember}{Dr. Shahram Taj}
+
+%---- Second Committee Member
+%\newcommand{\thesisComitteeSecondMember}{}
+
+%---- Appendix title in toc
+\renewcommand\appendixtocname{Appendix}
+\begin{document}
+
+
+%---- Signature Page
+\input{Content/01_Front_Matter/main}
+
+% %---- Chapters
+\input{Content/02_Chapters/main}
+
+\cleardoublepage
+\bibliographystyle{apacite}
+\bibliography{Bibliography/project-proposal.bib}
+
+
+
+\end{document}

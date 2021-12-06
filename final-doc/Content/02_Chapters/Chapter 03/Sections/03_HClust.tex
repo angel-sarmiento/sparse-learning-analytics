@@ -1,0 +1,25 @@
+%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   Thesis template by Youssif Al-Nashif
+%
+%   May 2020
+%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Clustering with Graph Kernels}
+
+\hspace*{0.3cm} The resulting graph kernel matrix, with dimensions $n \times n$, is high dimensional data. We can take this kernel and perform a principal component analysis (PCA) to reduce the high dimensionality of this data. Each row, can be considered as an observation, and each column as its similarity value or in the $j$-th graph's dimension. PCA then allows us to express the data in a lower dimensionality, hopefully in 2 or 3 dimensions which can be visualized much better. \\
+
+Then, this transformed kernel data is then used in place of a distance matrix for hierarchical clustering. Since the kernel is a similarity kernel, i.e. larger values mean values are closer or more similar, and not a distance kernel, we need to adjust the kernel. The kernel's elements are passed through the function $f(x) = \frac{1}{x}$ to get the reciprocal value for each similarity value\textemdash thus converting the value to a value representative of distance. The hierarchical clustering is performed with the manhattan distance: \\
+
+\begin{equation}
+d(\vec{p},\vec{q}) = \sum_{i=1}^n |p_i - q_i|
+\end{equation}
+
+Since the edge label histograms have entries of either 1 or 0, the manhattan distance was a better match for the space. The hierarchical clustering also uses a linkage method of Ward's method, for minimizing variance. Ward's method is defined as:\\
+
+\begin{equation}
+d(\vec{p},\vec{q}) = || \vec{p} - \vec{q} ||^2
+\end{equation}
+
+The resulting dendrograms are then able to be visualized, analyzed, and cut to form clusters of the documents. In the dendrograms, each document is a ``leaf", or end of the tree, and each dendrogram represents the corpus as a whole. Clusters are then formed when the tree is ``cut" at some height; the clusters are then what are of interest to the researcher, as they are the result of this unsupervised learning method. 
