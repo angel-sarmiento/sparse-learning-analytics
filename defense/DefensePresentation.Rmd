@@ -1,0 +1,417 @@
+---
+title: "Data-Driven STEM Curriculum Design and Education with Association Graphs and Unsupervised Learning Techniques"
+author: "Angel J. Sarmiento (B.S. Mechanical Engineering)"
+subtitle: "<html><div style='float:left'></div><hr color='#522A87' size=1px width=796px></html>"
+#author: Angel Sarmiento
+date: Masters of Science in Computer Science (Data Science Track) Candidate #"`r format(Sys.time(), '%d %B %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["poly.css", metropolis, metropolis-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: false
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+library(here)
+library(readr)
+library(dplyr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
+class: inverse, center, middle
+name: Intro
+
+# Introduction
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+---
+
+# Introduction
+## The Big Idea
+
+One of the many methods in text mining and text visualization is to express the text as a **bi-gram**, skip-gram, or other n-gram graphs, but can these ideas be extended to *Learning Analytics* applications?
+
+
+--
+
+Through the use of **topic models**, text data can be assigned to topics based on the frequency of the words in that topic. **Document-term matrices** can be constructed to develop these topic models and compute distance between two bodies of text using distance and similarity metrics.
+
+--
+
+The application of interest here is to utilize these distance metrics to create **course-concept association graphs**, as well as to create lower-dimensional representations of the course data using **dimensionality reduction** with **MCA** and **MDS**.
+
+
+
+
+---
+
+# Introduction to the Data
+
+There is one dataset used for this analysis, obtained from the registrar's office at [Florida Polytechnic University](http://floridapolytechnic.catalog.acalog.com) provided by Jay Hoying, M.Ed. Associate Registrar Office of the University Registrar. 
+
+--
+
+The FPU data includes information from every class offered at FPU. This includes information for department, course ID, course objectives, course descriptions, course outlines, and other features. The focus of the analysis here is on the Data Science and Business Analytics (DSBA) and the Computer Science (CS) Departments. 
+
+---
+
+# Introduction to the Data (cont.)
+## FPU Course Catalog
+
+- **Motivation:** These efforts and results support initiatives in FPU's University-wide catalog development. These courses are all courses that are currently offered at FPU, or that have been offered at FPU in the past. The course descriptions and outlines contain lots of information useful for characterizing coursework in a Learning Analytics framework.
+
+- **Format and Collection:** the data is compiled into a single `.csv` file that was provided by Jay Hoying, M.Ed. Associate Registrar Office of the University Registrar.
+
+```{r, out.width = "400px", echo  = FALSE, fig.align='center'}
+# OPEN IN CHROME ONLY
+knitr::include_graphics("images/fpu_data.png")
+```
+
+---
+class: inverse, center, middle
+name: Methods
+
+# Methods 
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+---
+
+# Methods
+
+
+Creation of document -term matrices with course data for bigram creation. dimensionality reduction method applied to identify clusters of concepts with biplots. 
+
+--
+
+Course-concept association graph created with relevant techniques such as sparse factor analysis (sparfa), along with a measure for verifying the connections across topics/courses.
+
+--
+
+Creation of a proof-of-concept scripts and templates, utilizing these methods to be further iterated upon in future work and applied to the entire catalogs of data. 
+
+---
+
+# Methods
+## Data Ingest & Text Preprocessing
+
+The data is imported through a `.csv` and cleaned with a set of helper functions. These helper functions do everything from cleaning the column names to using regular expressions or `regex` to remove unnecessary words and features of the text data. For example, this could be a string character for $1.$ at the beginning of outlines.
+
+This process uses popular packages from the R community such as `{dplyr}`, `{tidytext}`, and `{stringr}` (in addition to custom functions) to do data reformatting/reshaping, tokenization, and parsing of strings to properly treat the data before it moves to the next step.
+
+The resulting data is then passed into the modeling methods by first creating Document-Term Matrices.
+
+---
+# Methods
+## Document-Term matrix
+
+In a Document-term matrix, rows correspond to documents in the collection and columns correspond to terms. This can then be fed into models like Latent Dirichlet Allocation for assigning topic representations alongside these words. In this case, we are using bi-grams as our terms and course outlines and descriptions as our topics.
+
+```{r, message = FALSE, warning = FALSE, fig.align='center', out.align = 'center'}
+read_csv(here("defense/images/bigram.csv")) %>% head(8) %>% kableExtra::kable( align = "c") %>%
+  kableExtra::kable_styling(c("striped", "condensed"), 
+                latex_options = "striped", 
+                full_width = F)
+```
+
+
+---
+
+# Methods (cont.)
+## Computation of the Distance Metrics
+
+The distance between two bodies of text is calculated through a number of distance metrics or similarity metrics. The two most performant metrics being:  
+
+--
+**Cosine Similarity**: 
+$$ \cos (\theta) = \frac{A \cdot B}{|| A || || B||}$$
+--
+where $\theta$ is the angle between two vectors, denoting the similarity.  $||A||$ and $||B||$ are the Euclidean Norm or length of two vectors (in this case, course descriptions or course outline vectors). $A \cdot B$ is the dot product  between two course descriptions or course outlines. 
+
+--
+**Jaccard Similarity**  
+$$\frac{A \cap B}{A \cup B}$$
+--
+where A and B are course descriptions or course outlines in vector form, and we are calculating the intersection divided by the union between the two vectors.
+--
+
+
+---
+
+# Methods (cont.)  
+
+--
+**Latent Dirichlet Allocation (LDA)**  
+
+
+Latent Dirichlet Allocation is a generative model that is used to generate a set of unobserved groups (topics) based on words collected into documents. In the context of text mining, this is called a **topic model**. For this research, the "unobserved" (by the data) groupings were the course concentrations of the specific plans of study where the document-term matrix of bigrams was used to create these groupings.   
+
+--
+**Multiple Correspondence Analysis (MCA)**   
+
+
+Correspondence Analysis is used to generate latent space representations of the dynamics present in text data by utilizing distance metrics and the Singular Value Decomposition (SVD) respectively. Correspondence Analysis uses SVD to get latent space representations of text data,  where the new corresponding dimensions decrease successively in proportion of variance explained.  
+
+--
+**Multi-Dimensional Scaling (MDS)**  
+
+
+MDS is another dimensionality reduction which allows for dynamic exploration of different distance metrics for use with text data, some of which are highly robust to features of text data.  
+
+
+---
+
+class: inverse, center, middle
+name: Analysis
+
+# Analysis
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+---
+
+
+# Analysis: FPU DSBA Catalog
+.pull-left[
+First, hierarchical clustering was performed for a number of hyperparameter sets to assess which set produced the best clustering, measuring by within sum of squares (WSS).
+
+The five best hyperparameters sets were collected and used in further analysis of NHTSA data.
+]
+.pull-right[
+```{r, out.width = "475px", fig.retina = 3, echo  = FALSE,fig.align='center'}
+# OPEN IN CHROME ONLY
+knitr::include_graphics("https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/hclust_variation.png")
+```
+]
+
+---
+
+# Analysis: NHTSA SCI
+
+```{r, out.width = "700px", fig.retina = 3, echo = FALSE, fig.align='center'}
+# OPEN IN CHROME ONLY
+knitr::include_graphics("https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/table_pic.png")
+```
+
+---
+
+# Analysis: NHTSA SCI
+
+```{r, out.width = "750px", fig.retina = 3, echo = FALSE, fig.align='center'}
+# OPEN IN CHROME ONLY
+knitr::include_graphics("https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/5cluster.png")
+```
+
+
+---
+
+# Analysis: NHTSA SCI
+
+In the 5 dendrograms produced, we see that prominent clusters form in the dendrograms. Furthermore, there are a number of documents that are co-members across all 5 clusterings; this is encouraging as it indicates that the those clusters are not so sensitive to chosen hyperparameters, but the documents are indeed similar.
+
+We can track this co-membership across all 5 clusterings with a matrix where rows and columns are documents, and the entry is either a $1$ or $0$ depending on if the document pair were consistently co-members.
+
+
+---
+
+# Analysis: NHTSA SCI
+
+```{r, out.width = "550px", fig.retina = 3, echo = FALSE, fig.align='center'}
+# OPEN IN CHROME ONLY
+knitr::include_graphics("https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/comembers5.png")
+```
+
+--- 
+
+# Analysis: NHTSA SCI
+
+Upon further inspection of some co-members text we can notices some similarities. For example, document #2 (Ambulance crash in Angola, DE) has only 3 other co-members; document #11, #30, and #38. Three featured ambulance roll over events, all had fatalities, and all of them were front end collisions where the ambulance struck another vehicle, structure, or object.
+
+While this is just one specific example of similarities across the co-members, we can use text mining concepts like term-frequency/inverse document frequency (TF-IDF) plots to examine which words may represent a cluster.
+
+---
+
+# Analysis: NHTSA SCI
+
+```{r, out.width = "700px", fig.retina = 3, echo = FALSE, fig.align='center'}
+# OPEN IN CHROME ONLY
+knitr::include_graphics("https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/nhtsa_tf_idf.png")
+```
+
+---
+# Analysis: NHTSA SCI
+
+In the TF-IDF plot we see that clusters use words specifically related to a cluster's vehicle manufacturers, medical terms, and words that describe a crash situation (e.g. guardrail, tree, interstate).
+
+These TF-IDF plots stand as a summary for each cluster, and to gain more insight into a cluster's content we can examine the skip-gram graph.
+
+---
+
+# Analysis: NHTSA SCI
+
+```{r, out.width = "700px", fig.retina = 3, echo = FALSE, fig.align='center'}
+# OPEN IN CHROME ONLY
+knitr::include_graphics("https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/graph_k5_2.png")
+```
+
+---
+
+# Analysis: reddit Threads
+
+Similar to the NHTSA SCI reports, optimal number of clusters was assessed with an "elbow plot" and the consistently best performing hyperparamter set from the NHTSA analysis was used here as well.
+
+Hyperparameters: Skip window $k=3$, kernel parameter $\sigma = 1200$
+
+After computing the kernel with the hyperparameter set, we see two very distinct larger groups which then break into smaller groups. The groups are clear and provide confidence in the clustering result. In addition to the dendrogram, analysis is done on the cluster to assess which posts were included in the cluster as it relates to their query word that lead to their collection.
+
+---
+
+# Analysis: reddit Threads
+
+```{r, out.width = "700px", fig.retina = 3, echo = FALSE, fig.align='center'}
+# OPEN IN CHROME ONLY
+knitr::include_graphics("https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/reddit_wss.png")
+```
+
+---
+
+# Analysis: reddit Threads
+
+```{r, out.width = "700px", fig.retina = 3, echo = FALSE, fig.align='center'}
+# OPEN IN CHROME ONLY
+knitr::include_graphics("https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/k4_reddit_clusters.png")
+```
+
+---
+
+# Analysis: reddit Threads
+
+We see that some query words are more strongly expressed in a cluster than other words. This may be indicative of a writing style, discussion topic, or tone that is more unique to those threads. 
+
+In the previous slide, we see that clusters $3$ & $4$ collected posts from the "angry" query word, and cluster $1$ displayed a strong portion of its posts being collected from the "sad" query word.
+
+Again, we can view a skip-gram network to get an idea of what the text was discussing. Below we can visualize the skip-gram network for $10$ threads that were clustered together.
+
+---
+
+# Analysis: reddit Threads
+
+```{r, out.width = "700px", fig.retina = 3, echo = FALSE, fig.align='center'}
+# OPEN IN CHROME ONLY
+knitr::include_graphics("https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/reddit_network.png")
+```
+
+---
+
+# Analysis: Comparison of Results
+
+Upon examination of both results, it is clear that these methods perform better with larger documents, as opposed to a large corpus. By measure of WSS, the NHTSA dataset displayed better results than the reddit dataset. The reddit dataset did however display more prominent clusters, which could have been due to the large number of documents in that corpus. Additionally, the computation time for the large document size NHTSA dataset was much more reasonable than the large corpus reddit dataset.
+
+--
+
+It should also be noted that the optimal number of clusters, as well as hyperparameters, will need to be adjusted and changed depending on the dataset of concern. Applying results from the NHTSA study, which indicated that $k=3$ was the best skip-gram window width, did seem to apply to the reddit dataset as well.
+
+---
+class: inverse, center, middle
+name: Conclusion
+
+# Conclusion
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+---
+
+# Conclusion
+
+Through the application of several different methods in conjunction with one another (skip-grams, graph kernels, and hierarchical clustering), clustering can be performed on text while preserving as much of the rich information from the original text as possible.
+
+--
+
+The NHTSA results can be used to inform other research initiatives of similar scenarios to simulate or reproduce for autonomous vehicles to learn from. Identifying the clusters and providing summarized results, allows for similar crash reports to be compiled. This compiled information can aid in the generation of more "edge case" scenarios for Florida Polytechnic University's AMI. 
+
+--
+
+The reddit thread dataset, although too large for these methods to be applied initially, but through use of parallel processing it was able to be completed. The prominent clustering from this dataset was an encouraging result, and with some additions to these methods the workflow outlined here could be a strong social media mining tool. 
+
+---
+
+# Conclusion
+
+In summary, the methods described here will continue to develop into more mature technologies that could be applied to a wide range of natural language processing tasks. Once these methods are rebuilt into a clean package for a high performance computing environment, they will see use in industries that process large amounts of text data. 
+
+--
+
+Additionally, these methods could be applied to previously published work on the intelligent navigation of comments and posts for social media. The clustering results here could prove to be another clever way to filter out harmful, or otherwise unwanted, content from a web user. 
+
+--
+
+All of the methods are publically available on a [public GitHub repository](https://github.com/Levi-Nicklas/GraphDocNLP). All code can be updated, adapted, recreated, and scrutinized; transparency and availability of these methods will benefit the software development and data science communities that use GitHub. The open sourcing of software leaves the work open, and leads to better open science for the community at large.
+
+---
+
+class: inverse, center, middle
+name: Future
+
+# Future Development
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+---
+
+# Future Development
+
+The most important future work at this stage is adapting these methods to be able to be applied at scale on a high performance computing cluster (HPC). The methods currently do not handle a large corpus well, which will be problematic for any application in industry. 
+
+--
+
+Additionally, the methods need to be tested with additional modifications. Adding edge attributes which are weightings according to the number of times a skip-gram appears in the text, or a TF-IDF value, could be a modification which leads to better results. Other types of graph kernels, which are more computationally intensive, should be used on this same data and the results compared.
+
+--
+
+Lastly, since the NHTSA dataset is small, it could be labeled by hand and then supervised learning could be applied. Support vector machines could be a great first step in using the graph kernel matrix in a supervised learning context.
+
+---
+# Acknowledgements
+
+I would like to thank Dr. Sanchez-Arias for his support and guidance throughout the entire program and especially in the last year, and for advising my time at Florida Polytechnic.
+
+Thanks to Dr. Centeno and Dr. Chintakunta for offering their time to review my work and serve on my thesis committee.
+
+Thank you to Florida Polytechnic University for the opportunity to study at our growing school, and for the financial support in the form of scholarships and assistantships.
+
+---
+
+# Dedication
+
+I would like to dedicate this work to my dear wife Julienne, and our soon to be baby girl, without whose support, love, and encouragement I would not have finished this work. I hope this work is something that you can always be proud of! 
+
+Thank you Jules.
+
+---
+
+class: inverse, center, middle
+name: End
+
+# Any Questions?
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+---
+
+class: inverse, center, middle
+name: Close
+
+# Thank you!!
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px width=796px></html>
+
+---
+
+# References
+
+--- 
+
+Available at GitHub [here](https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/main.pdf#appendix*.19)
