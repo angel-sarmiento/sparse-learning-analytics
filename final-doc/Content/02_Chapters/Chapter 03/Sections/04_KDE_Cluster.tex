@@ -1,0 +1,18 @@
+%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   Thesis template by Youssif Al-Nashif
+%
+%   May 2020
+%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Alternate Clustering Method with KDE}
+
+As an alternative to popular clustering methods that were used in the preceding section, another clustering method was attempted that features use of kernel density estimation. By using a kernel density estimation (KDE) on the kernel values, we can cluster the documents into similar groups, defined by local maxima. \\
+First, the graph kernel matrix, $K$ is taken, and we extract a row, $i$, and we compute a KDE using R's \texttt{density()} function. Now, the default value for bandwidth will likely produce a smooth, unimodal or bimodal distribution, but this is not what the goal is. The goal is to use the KDE to find clusters through their value appearing in a local maxima. So, through producing a KDE with few local maxima, we produce very few clusters. If the number of clusters needs to increase, we can essentially overfit the KDE and abuse the use of the bandwidth parameter to create a KDE with many more local maxima and minima.\\
+
+%% INSERT GRAPHIC HERE.
+**GRAPHIC**\\ 
+
+Once a KDE with a sufficient number of local maxima, which is determined by the user, then cluster breaks are located. If we consider the estimated KDE to be a function $k(x)$, where $x$ is a kernel value, and $k(x)$ is the estimated density at a value $x$, then we can do calculus to locate the break points. 
+
