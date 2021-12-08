@@ -85,11 +85,11 @@ name: Methods
 # Methods
 
 
-Creation of document -term matrices with course data for bigram creation. dimensionality reduction method applied to identify clusters of concepts with biplots. 
+Creation of **document -term matrices** with course data for bigram creation. **Dimensionality reduction** method applied to identify clusters of concepts with biplots. 
 
 --
 
-Course-concept association graph created with relevant techniques such as sparse factor analysis (sparfa), along with a measure for verifying the connections across topics/courses.
+**Course-concept association graph** created with relevant techniques such as , along with a measure for verifying the connections across topics/courses.
 
 --
 
@@ -233,10 +233,6 @@ knitr::include_graphics("images/cos_mds.png")
 # Analysis: CS Plan of Study
 
 Similar steps are done to the Computer Science Plan of Study. 
----
-
-# Analysis: CS Plan of Study
-
 ```{r, out.width = "850px", out.heigh="800px", fig.retina = 3, echo = FALSE, fig.align='center'}
 # OPEN IN CHROME ONLY
 knitr::include_graphics("images/lda_cs_alt.png")
@@ -260,7 +256,7 @@ COP 3338 (Object Oriented Programming) lay at the center of a lot of the compute
 
 --
 .pull-right[
-```{r, out.width = "500px", out.height="575px", fig.retina = 3, echo = FALSE, fig.align='center'}
+```{r, out.width = "500px", out.height="550px", fig.retina = 3, echo = FALSE, fig.align='center'}
 # OPEN IN CHROME ONLY
 knitr::include_graphics("images/cos_cs.png")
 ```
@@ -273,11 +269,6 @@ knitr::include_graphics("images/cos_cs.png")
 # OPEN IN CHROME ONLY
 knitr::include_graphics("images/cos_mds_cs.png")
 ```
-
----
-
-# Analysis: CS Plan of Study
-
 
 ---
 class: inverse, center, middle
