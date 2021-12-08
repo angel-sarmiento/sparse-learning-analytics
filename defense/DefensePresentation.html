@@ -195,7 +195,6 @@ where A and B are course descriptions or course outlines in vector form, and we 
 
 # Methods (cont.)  
 
---
 **Latent Dirichlet Allocation (LDA)**  
 
 
@@ -225,118 +224,89 @@ name: Analysis
 ---
 
 
-# Analysis: FPU DSBA Catalog
+# Analysis: DSBA Plan of Study
 .pull-left[
-First, hierarchical clustering was performed for a number of hyperparameter sets to assess which set produced the best clustering, measuring by within sum of squares (WSS).
+First, MCA was performed on the document-term matrix of the course outline bigrams. Selecting the dimensions with the highest proportion of variance yields a smaller dimensional subset of the data in which the third and fourth dimensions can be viewed in the biplot on the right. 
 
-The five best hyperparameters sets were collected and used in further analysis of NHTSA data.
 ]
 .pull-right[
-&lt;img src="https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/hclust_variation.png" width="475px" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/mca_bp_2.png" width="475px" height="500px" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
 
-# Analysis: NHTSA SCI
+# Analysis: DSBA Plan of Study  
 
-&lt;img src="https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/table_pic.png" width="700px" style="display: block; margin: auto;" /&gt;
-
----
-
-# Analysis: NHTSA SCI
-
-&lt;img src="https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/5cluster.png" width="750px" style="display: block; margin: auto;" /&gt;
-
+LDA with Gibbs Sampling on the Course Description Bigrams
+&lt;img src="images/lda_alt.png" width="850px" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Analysis: NHTSA SCI
+# Analysis: DSBA Plan of Study
+.pull-left[
+Using cosine-similarity, we see how the courses compare to one another using the full course descriptions. The **darker** the line, the "closer" two courses are in cosine distance. 
 
-In the 5 dendrograms produced, we see that prominent clusters form in the dendrograms. Furthermore, there are a number of documents that are co-members across all 5 clusterings; this is encouraging as it indicates that the those clusters are not so sensitive to chosen hyperparameters, but the documents are indeed similar.
-
-We can track this co-membership across all 5 clusterings with a matrix where rows and columns are documents, and the entry is either a `\(1\)` or `\(0\)` depending on if the document pair were consistently co-members.
-
-
----
-
-# Analysis: NHTSA SCI
-
-&lt;img src="https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/comembers5.png" width="550px" style="display: block; margin: auto;" /&gt;
-
---- 
-
-# Analysis: NHTSA SCI
-
-Upon further inspection of some co-members text we can notices some similarities. For example, document #2 (Ambulance crash in Angola, DE) has only 3 other co-members; document #11, #30, and #38. Three featured ambulance roll over events, all had fatalities, and all of them were front end collisions where the ambulance struck another vehicle, structure, or object.
-
-While this is just one specific example of similarities across the co-members, we can use text mining concepts like term-frequency/inverse document frequency (TF-IDF) plots to examine which words may represent a cluster.
-
----
-
-# Analysis: NHTSA SCI
-
-&lt;img src="https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/nhtsa_tf_idf.png" width="700px" style="display: block; margin: auto;" /&gt;
-
----
-# Analysis: NHTSA SCI
-
-In the TF-IDF plot we see that clusters use words specifically related to a cluster's vehicle manufacturers, medical terms, and words that describe a crash situation (e.g. guardrail, tree, interstate).
-
-These TF-IDF plots stand as a summary for each cluster, and to gain more insight into a cluster's content we can examine the skip-gram graph.
-
----
-
-# Analysis: NHTSA SCI
-
-&lt;img src="https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/graph_k5_2.png" width="700px" style="display: block; margin: auto;" /&gt;
-
----
-
-# Analysis: reddit Threads
-
-Similar to the NHTSA SCI reports, optimal number of clusters was assessed with an "elbow plot" and the consistently best performing hyperparamter set from the NHTSA analysis was used here as well.
-
-Hyperparameters: Skip window `\(k=3\)`, kernel parameter `\(\sigma = 1200\)`
-
-After computing the kernel with the hyperparameter set, we see two very distinct larger groups which then break into smaller groups. The groups are clear and provide confidence in the clustering result. In addition to the dendrogram, analysis is done on the cluster to assess which posts were included in the cluster as it relates to their query word that lead to their collection.
-
----
-
-# Analysis: reddit Threads
-
-&lt;img src="https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/reddit_wss.png" width="700px" style="display: block; margin: auto;" /&gt;
-
----
-
-# Analysis: reddit Threads
-
-&lt;img src="https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/k4_reddit_clusters.png" width="700px" style="display: block; margin: auto;" /&gt;
-
----
-
-# Analysis: reddit Threads
-
-We see that some query words are more strongly expressed in a cluster than other words. This may be indicative of a writing style, discussion topic, or tone that is more unique to those threads. 
-
-In the previous slide, we see that clusters `\(3\)` &amp; `\(4\)` collected posts from the "angry" query word, and cluster `\(1\)` displayed a strong portion of its posts being collected from the "sad" query word.
-
-Again, we can view a skip-gram network to get an idea of what the text was discussing. Below we can visualize the skip-gram network for `\(10\)` threads that were clustered together.
-
----
-
-# Analysis: reddit Threads
-
-&lt;img src="https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/Content/Images/reddit_network.png" width="700px" style="display: block; margin: auto;" /&gt;
-
----
-
-# Analysis: Comparison of Results
-
-Upon examination of both results, it is clear that these methods perform better with larger documents, as opposed to a large corpus. By measure of WSS, the NHTSA dataset displayed better results than the reddit dataset. The reddit dataset did however display more prominent clusters, which could have been due to the large number of documents in that corpus. Additionally, the computation time for the large document size NHTSA dataset was much more reasonable than the large corpus reddit dataset.
+Cosine distance is obtained by subtracting the cosine similarity from 1. 
+]
 
 --
+.pull-right[
+&lt;img src="images/cos.png" width="500px" height="575px" style="display: block; margin: auto;" /&gt;
+]
 
-It should also be noted that the optimal number of clusters, as well as hyperparameters, will need to be adjusted and changed depending on the dataset of concern. Applying results from the NHTSA study, which indicated that `\(k=3\)` was the best skip-gram window width, did seem to apply to the reddit dataset as well.
+---
+
+# Analysis: DSBA Plan of Study
+.pull-left[
+Applying MDS yields the plot on the right. There are courses that group together for instance the top grouping, where ENT 3002 and EGS 5930.
+]  
+
+--
+.pull-right[
+&lt;img src="images/cos_mds.png" width="480px" height="550px" style="display: block; margin: auto;" /&gt;
+]  
+
+---
+
+# Analysis: CS Plan of Study
+
+Similar steps are done to the Computer Science Plan of Study. 
+---
+
+# Analysis: CS Plan of Study
+
+&lt;img src="images/lda_cs_alt.png" width="850px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Analysis: CS Plan of Study  
+
+Topic 6 seems to most likely be either Software Engineering or Advanced Topics with terms like "object oriented" and "remote procedure" while topics 2 and 3 fit with Big Data 
+Analytics and Cyber Security respectively. Topic 1 has terms that can be aligned with Autonomous Systems like "objection recognition", 
+memory model", and "edge detection". 
+
+---
+
+# Analysis: CS Plan of Study
+
+.pull-left[
+COP 3338 (Object Oriented Programming) lay at the center of a lot of the computer science curriculum. We see from the cosine distance plot that it is very convenient in tracking the core courses within a department. 
+]  
+
+--
+.pull-right[
+&lt;img src="images/cos_cs.png" width="500px" height="575px" style="display: block; margin: auto;" /&gt;
+]
+---
+
+# Analysis: CS Plan of Study
+
+&lt;img src="images/cos_mds_cs.png" width="480px" height="550px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Analysis: CS Plan of Study
+
 
 ---
 class: inverse, center, middle
@@ -350,29 +320,20 @@ name: Conclusion
 
 # Conclusion
 
-Through the application of several different methods in conjunction with one another (skip-grams, graph kernels, and hierarchical clustering), clustering can be performed on text while preserving as much of the rich information from the original text as possible.
+
+Learning Analytics and Unsupervised Learning methods were used as basis for developing course-concept association graphs.  There were numerous interesting takeaways gained from the 
+analyses performed here, as well as many different downsides to each approach.  Additional analysis is needed to provide sufficient evidence to suggest 
+non-linear course design,  however the groundwork is there for future analyses to determine so. 
+
 
 --
+We believe this  project resulted in contributions to the existing body of knowledge on these techniques applied to 
+learning analytics, as well as to the University as a whole in providing a tangible body of work to be used by future 
+students, faculty, and course planners.   
 
-The NHTSA results can be used to inform other research initiatives of similar scenarios to simulate or reproduce for autonomous vehicles to learn from. Identifying the clusters and providing summarized results, allows for similar crash reports to be compiled. This compiled information can aid in the generation of more "edge case" scenarios for Florida Polytechnic University's AMI. 
-
---
-
-The reddit thread dataset, although too large for these methods to be applied initially, but through use of parallel processing it was able to be completed. The prominent clustering from this dataset was an encouraging result, and with some additions to these methods the workflow outlined here could be a strong social media mining tool. 
-
----
-
-# Conclusion
-
-In summary, the methods described here will continue to develop into more mature technologies that could be applied to a wide range of natural language processing tasks. Once these methods are rebuilt into a clean package for a high performance computing environment, they will see use in industries that process large amounts of text data. 
 
 --
-
-Additionally, these methods could be applied to previously published work on the intelligent navigation of comments and posts for social media. The clustering results here could prove to be another clever way to filter out harmful, or otherwise unwanted, content from a web user. 
-
---
-
-All of the methods are publically available on a [public GitHub repository](https://github.com/Levi-Nicklas/GraphDocNLP). All code can be updated, adapted, recreated, and scrutinized; transparency and availability of these methods will benefit the software development and data science communities that use GitHub. The open sourcing of software leaves the work open, and leads to better open science for the community at large.
+All of the methods are publically available on a [public GitHub repository](https://github.com/angel-sarmiento/sparse-learning-analytics). All code can be updated, adapted, recreated, and scrutinized; transparency and availability of these methods will benefit the software development and data science communities that use GitHub. The open sourcing of software leaves the work open, and leads to better open science for the community at large.  
 
 ---
 
@@ -384,34 +345,40 @@ name: Future
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px width=796px&gt;&lt;/html&gt;
 ---
 
-# Future Development
-
-The most important future work at this stage is adapting these methods to be able to be applied at scale on a high performance computing cluster (HPC). The methods currently do not handle a large corpus well, which will be problematic for any application in industry. 
+# Future Development  
 
 --
+As stated above,  the entire investigation is built on open-source technologies in the R ecosystem with all code published 
+to Github. This allows the entire project to be cloned and iterated upon through future explorations of the techniques 
+discussed. One specific upside of this is that the code can easily applied to course data from other degree programs at FPU. A simple line of code to a function allows the work here to be applied to any department, with data cleaning and utility functions that can be iterated on. See the appendix below for more.  
 
-Additionally, the methods need to be tested with additional modifications. Adding edge attributes which are weightings according to the number of times a skip-gram appears in the text, or a TF-IDF value, could be a modification which leads to better results. Other types of graph kernels, which are more computationally intensive, should be used on this same data and the results compared.
 
 --
+Some future implementations of this work can include approaches like BERTScores and OK scores as alternative distance 
+approaches. Sparse Factor Analysis for an alternative to the network association graph creation. And other non-linear forms of dimensionality reduction.  
 
-Lastly, since the NHTSA dataset is small, it could be labeled by hand and then supervised learning could be applied. Support vector machines could be a great first step in using the graph kernel matrix in a supervised learning context.
+
+--
+There is also the potential for this data to be available to students, either through a web application or publicly available GUI for use in course planning for their academic success.   
+It would also be feasible to gain data on question-concept association graphs through sufficiently large databases of questions 
+given to students over time that are characterized by the topics covered by those questions. This could potentially link student 
+performance to their overall response to plans of study to adjust even further. 
 
 ---
 # Acknowledgements
 
-I would like to thank Dr. Sanchez-Arias for his support and guidance throughout the entire program and especially in the last year, and for advising my time at Florida Polytechnic.
+This work would not have been possible without the patience and support of my mentor and advisor, Dr. Reinaldo Sanchez-Arias. His example of excellence at what he does, as well as the patience and support in helping me figure who I am in this field, \\
+are once in a lifetime contributions that I will never take for granted. I hope my dedication and commitment can meet and exceed even a fraction of yours some day.
 
-Thanks to Dr. Centeno and Dr. Chintakunta for offering their time to review my work and serve on my thesis committee.
+Thanks to Dr. Shahram Taj who graciously agreed to be a part of the committee and gave me relevant feedback to better my work.
 
-Thank you to Florida Polytechnic University for the opportunity to study at our growing school, and for the financial support in the form of scholarships and assistantships.
+I would like to thank Florida Polytechnic University for their support, both in the form of scholarships and in the community that they foster on campus. I look forward to returning to campus and seeing how our small school is making a big impact. 
 
 ---
 
 # Dedication
 
-I would like to dedicate this work to my dear wife Julienne, and our soon to be baby girl, without whose support, love, and encouragement I would not have finished this work. I hope this work is something that you can always be proud of! 
-
-Thank you Jules.
+To my partner Amanda, who stuck with me throughout this entire Master's degree experience and helped me be who I am today. This would never have been possible without you.  
 
 ---
 
@@ -437,7 +404,7 @@ name: Close
 
 --- 
 
-Available at GitHub [here](https://raw.githubusercontent.com/Levi-Nicklas/GraphDocNLP/main/Thesis_Tex/main.pdf#appendix*.19)
+Available at GitHub [here](https://github.com/angel-sarmiento/sparse-learning-analytics/blob/main/final-doc/main.pdf#appendix)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
