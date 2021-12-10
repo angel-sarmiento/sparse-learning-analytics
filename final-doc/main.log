@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.12.2)  6 DEC 2021 18:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.12.2)  9 DEC 2021 19:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/angelsarmiento/Documents/Graduate/Project/final-doc/main.tex
-(/Users/angelsarmiento/Documents/Graduate/Project/final-doc/main.tex
+**/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/main.tex
+(/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/main.tex
 LaTeX2e <2020-10-01> patch level 4
 L3 programming layer <2021-02-18> (/usr/local/texlive/2021/texmf-dist/tex/latex/base/report.cls
 Document Class: report 2020/04/10 v1.4m Standard LaTeX document class
@@ -27,7 +27,7 @@ File: size12.clo 2020/04/10 v1.4m Standard LaTeX file (size option)
 Package: inputenc 2020/08/01 v1.3d Input encoding file
 \inpenc@prehook=\toks15
 \inpenc@posthook=\toks16
-) (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/Styles/thesis-v1.0.sty
+) (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Styles/thesis-v1.0.sty
 Package: Styles/thesis-v1.0 2020/04/01 Custom Package
  (/usr/local/texlive/2021/texmf-dist/tex/latex/algorithm2e/algorithm2e.sty
 Package: algorithm2e 2017/07/18 v5.2 algorithms environments
@@ -666,14 +666,12 @@ Package: appendix 2020/02/08 v1.2c extra appendix facilities
 \c@@pps=\count328
 \c@@ppsavesec=\count329
 \c@@ppsaveapp=\count330
-)) (/usr/local/texlive/2021/texmf-dist/tex/latex/apacite/apacite.sty
-Package: apacite 2013/07/21 v6.03 APA citation
-\c@BibCnt=\count331
-\bibleftmargin=\skip83
-\bibindent=\skip84
-\bibparsep=\skip85
-\bibitemsep=\skip86
-\biblabelsep=\skip87
+)) (/usr/local/texlive/2021/texmf-dist/tex/latex/natbib/natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip83
+\bibsep=\skip84
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count331
 ) (/usr/local/texlive/2021/texmf-dist/tex/latex/caption/subcaption.sty
 Package: subcaption 2020/10/07 v1.3j Sub-captions (AR)
 \c@subfigure=\count332
@@ -710,27 +708,27 @@ File: lstlang3.sty 2020/03/24 1.8d listings language file
 File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count342
 \l__pdf_internal_box=\box127
-) (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/main.aux)
+) (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
@@ -793,7 +791,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 66.
+Package hyperref Info: Link coloring OFF on input line 67.
 (/usr/local/texlive/2021/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
  (/usr/local/texlive/2021/texmf-dist/tex/latex/refcount/refcount.sty
@@ -803,29 +801,23 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count349
 )
-LaTeX Info: Redefining \ref on input line 66.
-LaTeX Info: Redefining \pageref on input line 66.
-LaTeX Info: Redefining \nameref on input line 66.
- (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/main.out) (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/main.out)
+LaTeX Info: Redefining \ref on input line 67.
+LaTeX Info: Redefining \pageref on input line 67.
+LaTeX Info: Redefining \nameref on input line 67.
+ (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/main.out) (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/main.out)
 \@outlinefile=\write4
 \openout4 = `main.out'.
 
-\c@maskedRefs=\count350
- (/usr/local/texlive/2021/texmf-dist/tex/latex/apacite/english.apc
-File: english.apc 2013/07/21 v6.03 apacite language file
-LaTeX Info: Redefining \BPBI on input line 129.
-LaTeX Info: Redefining \BHBI on input line 130.
-)
-\c@lstlisting=\count351
- (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/01_Front_Matter/main.tex (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/01_Front_Matter/00_cover_page.tex
-<Content/Images/FLPoly_logo.pdf, id=82, 412.54124pt x 112.92188pt>
+\c@lstlisting=\count350
+ (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/01_Front_Matter/main.tex (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/01_Front_Matter/00_cover_page.tex
+<Content/Images/FLPoly_logo.pdf, id=78, 412.54124pt x 112.92188pt>
 File: Content/Images/FLPoly_logo.pdf Graphic file (type pdf)
 <use Content/Images/FLPoly_logo.pdf>
 Package pdftex.def Info: Content/Images/FLPoly_logo.pdf  used on input line 10.
 (pdftex.def)             Requested size: 289.07999pt x 79.12918pt.
 ) [1
 
-{/usr/local/texlive/2021/texmf-var/fonts/map/pdftex/updmap/pdftex.map} </Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/Images/FLPoly_logo.pdf>] (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/01_Front_Matter/01_signatures_page.tex
+{/usr/local/texlive/2021/texmf-var/fonts/map/pdftex/updmap/pdftex.map} </Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/Images/FLPoly_logo.pdf>] (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/01_Front_Matter/01_signatures_page.tex
 LaTeX Font Info:    Trying to load font information for U+msa on input line 41.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -833,31 +825,31 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 41.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)) [2] (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/01_Front_Matter/02_dedication.tex) [3] (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/01_Front_Matter/03_acknowledgments.tex) [4] (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/01_Front_Matter/04_front_matter.tex (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/main.toc [1
+)) [2] (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/01_Front_Matter/02_dedication.tex) [3] (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/01_Front_Matter/03_acknowledgments.tex) [4] (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/01_Front_Matter/04_front_matter.tex (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/main.toc [1
 
 ])
 \tf@toc=\write5
 \openout5 = `main.toc'.
 
- [2] (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/main.lof)
+ [2] (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/main.lof)
 \tf@lof=\write6
 \openout6 = `main.lof'.
 
  [3
 
-] (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/main.lot)
+] (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/main.lot)
 \tf@lot=\write7
 \openout7 = `main.lot'.
 
  [4
 
-]) (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/01_Front_Matter/05_abstract.texpdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
+]) (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/01_Front_Matter/05_abstract.texpdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.14 \end{abstract}
-                    [1])) (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/02_Chapters/main.tex (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/02_Chapters/Chapter 01/main.tex
+l.26 \end{abstract}
+                    [1])) (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/02_Chapters/main.tex (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/02_Chapters/Chapter 01/main.tex
 Chapter 1.
-) (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/02_Chapters/Chapter 02/main.texpdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
+) (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/02_Chapters/Chapter 02/main.texpdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.9 \chapter
@@ -868,16 +860,16 @@ Chapter 2.
 pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.22 
+l.31 
       [2
 
 ]
-<../images/sparfa.png, id=256, 469.755pt x 295.1025pt>
-File: ../images/sparfa.png Graphic file (type png)
-<use ../images/sparfa.png>
-Package pdftex.def Info: ../images/sparfa.png  used on input line 31.
+<Content/images/sparfa.png, id=246, 469.755pt x 295.1025pt>
+File: Content/images/sparfa.png Graphic file (type png)
+<use Content/images/sparfa.png>
+Package pdftex.def Info: Content/images/sparfa.png  used on input line 46.
 (pdftex.def)             Requested size: 452.9679pt x 284.55597pt.
-) (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/02_Chapters/Chapter 03/main.texpdfTeX warning (ext4): destination with the same identifier (name{page.3}) has been already used, duplicate ignored
+) (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/02_Chapters/Chapter 03/main.texpdfTeX warning (ext4): destination with the same identifier (name{page.3}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.1 \chapter
@@ -885,10 +877,10 @@ l.1 \chapter
 <to be read again> 
                    \relax 
 l.1 \chapter
-            {Methods} [4 </Users/angelsarmiento/Documents/Graduate/Project/final-doc/../images/sparfa.png>]
+            {Methods} [4 </Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/images/sparfa.png>]
 Chapter 3.
-) (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/02_Chapters/Chapter 04/main.tex
-<Content/images/repo.png, id=270, 1505.625pt x 897.3525pt>
+) (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/02_Chapters/Chapter 04/main.tex
+<Content/images/repo.png, id=261, 1505.625pt x 897.3525pt>
 File: Content/images/repo.png Graphic file (type png)
 <use Content/images/repo.png>
 Package pdftex.def Info: Content/images/repo.png  used on input line 18.
@@ -896,64 +888,64 @@ Package pdftex.def Info: Content/images/repo.png  used on input line 18.
  [5
 
 ]
-<Content/images/mca_bp_2.png, id=280, 1977.3875pt x 2353.79375pt>
+<Content/images/mca_bp_2.png, id=270, 1977.3875pt x 2353.79375pt>
 File: Content/images/mca_bp_2.png Graphic file (type png)
 <use Content/images/mca_bp_2.png>
 Package pdftex.def Info: Content/images/mca_bp_2.png  used on input line 33.
 (pdftex.def)             Requested size: 452.94905pt x 630.43275pt.
- [6 </Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/images/repo.png>] [7 </Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/images/mca_bp_2.png>] [8]
-<Content/images/lda.png, id=301, 1977.3875pt x 2353.79375pt>
+ [6 </Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/images/repo.png>] [7 </Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/images/mca_bp_2.png>] [8]
+<Content/images/lda.png, id=291, 1977.3875pt x 2353.79375pt>
 File: Content/images/lda.png Graphic file (type png)
 <use Content/images/lda.png>
 Package pdftex.def Info: Content/images/lda.png  used on input line 62.
 (pdftex.def)             Requested size: 407.66017pt x 560.39664pt.
- [9 </Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/images/lda.png>] [10]
-<Content/images/cos.png, id=325, 1977.3875pt x 2353.79375pt>
+ [9 </Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/images/lda.png>] [10]
+<Content/images/cos.png, id=316, 1977.3875pt x 2353.79375pt>
 File: Content/images/cos.png Graphic file (type png)
 <use Content/images/cos.png>
 Package pdftex.def Info: Content/images/cos.png  used on input line 98.
 (pdftex.def)             Requested size: 226.48395pt x 269.58514pt.
-<Content/images/jac.png, id=326, 1977.3875pt x 2353.79375pt>
+<Content/images/jac.png, id=317, 1977.3875pt x 2353.79375pt>
 File: Content/images/jac.png Graphic file (type png)
 <use Content/images/jac.png>
 Package pdftex.def Info: Content/images/jac.png  used on input line 104.
 (pdftex.def)             Requested size: 226.48395pt x 269.58514pt.
  [11]
-<Content/images/cos_mds.png, id=337, 1977.3875pt x 2353.79375pt>
+<Content/images/cos_mds.png, id=328, 1977.3875pt x 2353.79375pt>
 File: Content/images/cos_mds.png Graphic file (type png)
 <use Content/images/cos_mds.png>
 Package pdftex.def Info: Content/images/cos_mds.png  used on input line 124.
 (pdftex.def)             Requested size: 226.48395pt x 269.58514pt.
-<Content/images/jac_mds.png, id=338, 1977.3875pt x 2353.79375pt>
+<Content/images/jac_mds.png, id=329, 1977.3875pt x 2353.79375pt>
 File: Content/images/jac_mds.png Graphic file (type png)
 <use Content/images/jac_mds.png>
 Package pdftex.def Info: Content/images/jac_mds.png  used on input line 130.
 (pdftex.def)             Requested size: 226.48395pt x 269.58514pt.
- [12 </Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/images/cos.png> </Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/images/jac.png>] [13 </Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/images/cos_mds.png> </Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/images/jac_mds.png>]
-<Content/images/lda_cs.png, id=352, 2073.7475pt x 2353.79375pt>
+ [12 </Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/images/cos.png> </Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/images/jac.png>] [13 </Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/images/cos_mds.png> </Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/images/jac_mds.png>]
+<Content/images/lda_cs.png, id=343, 2073.7475pt x 2353.79375pt>
 File: Content/images/lda_cs.png Graphic file (type png)
 <use Content/images/lda_cs.png>
 Package pdftex.def Info: Content/images/lda_cs.png  used on input line 169.
 (pdftex.def)             Requested size: 362.37332pt x 490.32462pt.
  [14]
-<Content/images/cos_cs.png, id=358, 2073.7475pt x 2353.79375pt>
+<Content/images/cos_cs.png, id=349, 2073.7475pt x 2353.79375pt>
 File: Content/images/cos_cs.png Graphic file (type png)
 <use Content/images/cos_cs.png>
 Package pdftex.def Info: Content/images/cos_cs.png  used on input line 184.
 (pdftex.def)             Requested size: 362.37332pt x 490.32462pt.
- [15 </Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/images/lda_cs.png>]
-<Content/images/cos_mds_cs.png, id=365, 2073.7475pt x 2353.79375pt>
+ [15 </Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/images/lda_cs.png>]
+<Content/images/cos_mds_cs.png, id=356, 2073.7475pt x 2353.79375pt>
 File: Content/images/cos_mds_cs.png Graphic file (type png)
 <use Content/images/cos_mds_cs.png>
 Package pdftex.def Info: Content/images/cos_mds_cs.png  used on input line 197.
 (pdftex.def)             Requested size: 362.37332pt x 490.32462pt.
- [16 </Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/images/cos_cs.png>]) (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/02_Chapters/Chapter 05/main.tex [17 </Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/images/cos_mds_cs.png>]
+ [16 </Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/images/cos_cs.png>]) (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/02_Chapters/Chapter 05/main.tex [17 </Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/images/cos_mds_cs.png>]
 Chapter 4.
-) (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/02_Chapters/Chapter 06/main.tex [18
+) (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/02_Chapters/Chapter 06/main.tex [18
 
 ]
 Chapter 5.
-) (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/02_Chapters/appendix.tex [19
+) (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/02_Chapters/appendix.tex [19
 
 ] [20
 
@@ -975,33 +967,32 @@ File: ts1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 
 ] [26] [27]
 Appendix D.
-<Content/images/lda_me.png, id=542, 2073.7475pt x 2353.79375pt>
+<Content/images/lda_me.png, id=532, 2073.7475pt x 2353.79375pt>
 File: Content/images/lda_me.png Graphic file (type png)
 <use Content/images/lda_me.png>
 Package pdftex.def Info: Content/images/lda_me.png  used on input line 163.
 (pdftex.def)             Requested size: 362.37332pt x 490.32462pt.
 [28
 
-])) [29 </Users/angelsarmiento/Documents/Graduate/Project/final-doc/Content/images/lda_me.png>] (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/main.bbl [30
+])) (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/main.bbl [29 </Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/Content/images/lda_me.png>] [30
 
-
-]) [31] (/Users/angelsarmiento/Documents/Graduate/Project/final-doc/main.aux)
+]) [31] (/Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: FD2EBED30EC7960A5028B6B9E49FF858;2605.
+(rerunfilecheck)             Checksum: 4DEE782FE474EF131464F2DFF928A650;2508.
  ) 
 Here is how much of TeX's memory you used:
- 26900 strings out of 478994
- 486234 string characters out of 5858184
- 1023211 words of memory out of 5000000
- 43647 multiletter control sequences out of 15000+600000
- 414306 words of font info for 68 fonts, out of 8000000 for 9000
+ 26805 strings out of 478994
+ 486287 string characters out of 5858184
+ 1020804 words of memory out of 5000000
+ 43559 multiletter control sequences out of 15000+600000
+ 413801 words of font info for 65 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 117i,11n,116p,2026b,2596s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb>
-Output written on /Users/angelsarmiento/Documents/Graduate/Project/final-doc/main.pdf (40 pages, 4427977 bytes).
+ 117i,11n,116p,1309b,2596s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb>
+Output written on /Users/angelsarmiento/Documents/GitHub.nosync/sparfa-learning-analytics/final-doc/main.pdf (40 pages, 4417253 bytes).
 PDF statistics:
- 665 PDF objects out of 1000 (max. 8388607)
- 561 compressed objects within 6 object streams
+ 644 PDF objects out of 1000 (max. 8388607)
+ 541 compressed objects within 6 object streams
  193 named destinations out of 1000 (max. 500000)
- 230 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 222 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,335 +1,79 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{11}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem [\protect \citeauthoryear {%
-Barbu%
-\ \protect \BOthers {.}}{%
-Barbu%
-\ \protect \BOthers {.}}{%
-{\protect \APACyear {{\protect \bibnodate {}}}}%
-}]{%
-barbu_data_nodate}
-\APACinsertmetastar {%
-barbu_data_nodate}%
-\begin{APACrefauthors}%
-Barbu, M.%
-, Vilanova, R.%
-, Vicario, J\BPBI L.%
-, Varanda, M\BPBI J.%
-, Alves, P.%
-, Podpora, M.%
-\BDBL {}Tocu, R.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{{\protect \bibnodate {}}}{}{}.
-\newblock
-{\BBOQ}\APACrefatitle {Data {Mining} {Tool} for {Academic} {Data}
-  {Exploitation}} {Data {Mining} {Tool} for {Academic} {Data}
-  {Exploitation}}.{\BBCQ}
-\newblock
-\APACjournalVolNumPages{}{}{}{62}.
-\PrintBackRefs{\CurrentBib}
+\bibitem[Lan et~al.(2014)Lan, Studer, Waters, and Baraniuk]{lan_tag-aware_2014}
+Andrew~S. Lan, Christoph Studer, Andrew~E. Waters, and Richard~G. Baraniuk,
+  2014.
 
-\bibitem [\protect \citeauthoryear {%
-Blei%
-, Ng%
-\BCBL {}\ \BBA {} Jordan%
-}{%
-Blei%
-\ \protect \BOthers {.}}{%
-{\protect \APACyear {2003}}%
-}]{%
-lda_pap}
-\APACinsertmetastar {%
-lda_pap}%
-\begin{APACrefauthors}%
-Blei, D\BPBI M.%
-, Ng, A\BPBI Y.%
-\BCBL {}\ \BBA {} Jordan, M\BPBI I.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{2003}{mar}{}.
-\newblock
-{\BBOQ}\APACrefatitle {Latent Dirichlet Allocation} {Latent dirichlet
-  allocation}.{\BBCQ}
-\newblock
-\APACjournalVolNumPages{J. Mach. Learn. Res.}{3}{null}{993–1022}.
-\PrintBackRefs{\CurrentBib}
+\bibitem[Joachims and EDU(2015)]{lan_sparse_nodate}
+Thorsten Joachims and CORNELL EDU.
+\newblock Learning representations of student knowledge and educational
+  content.
+\newblock In \emph{International Conference on Machine Learning
+  Workshop—Machine Learning for Education}, 2015.
 
-\bibitem [\protect \citeauthoryear {%
-Burrows%
-}{%
-Burrows%
-}{%
-{\protect \APACyear {2002}}%
-}]{%
-burrow}
-\APACinsertmetastar {%
-burrow}%
-\begin{APACrefauthors}%
-Burrows, J.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{2002}{09}{}.
-\newblock
-{\BBOQ}\APACrefatitle {{‘Delta’: a Measure of Stylistic Difference and a
-  Guide to Likely Authorship}} {{‘Delta’: a Measure of Stylistic Difference
-  and a Guide to Likely Authorship}}.{\BBCQ}
-\newblock
-\APACjournalVolNumPages{Literary and Linguistic Computing}{17}{3}{267-287}.
-\newblock
-\begin{APACrefURL} \url{https://doi.org/10.1093/llc/17.3.267} \end{APACrefURL}
-\newblock
-\begin{APACrefDOI} \doi{10.1093/llc/17.3.267} \end{APACrefDOI}
-\PrintBackRefs{\CurrentBib}
+\bibitem[Barbu et~al.(2017)Barbu, Vilanova, Lopez~Vicario, Pereira, Alves,
+  Podpora, {\'A}ngel~Prada, Mor{\'a}n, Torreburno, Marin,
+  et~al.]{barbu_data_nodate}
+Marian Barbu, Ramon Vilanova, Jos{\'e} Lopez~Vicario, Maria~Jo{\~a}o Pereira,
+  Paulo Alves, Michal Podpora, Miguel {\'A}ngel~Prada, Antonio Mor{\'a}n, Aldo
+  Torreburno, Simona Marin, et~al.
+\newblock Data mining tool for academic data exploitation: literature review
+  and first architecture proposal.
+\newblock \emph{Projecto SPEET-Student Profile for Enhancing Engineering
+  Tutoring}, 2017.
 
-\bibitem [\protect \citeauthoryear {%
-de Leeuw%
-\ \BBA {} Mair%
-}{%
-de Leeuw%
-\ \BBA {} Mair%
-}{%
-{\protect \APACyear {2009}}%
-}]{%
-jjs}
-\APACinsertmetastar {%
-jjs}%
-\begin{APACrefauthors}%
-de Leeuw, J.%
-\BCBT {}\ \BBA {} Mair, P.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{2009}{}{}.
-\newblock
-{\BBOQ}\APACrefatitle {Multidimensional Scaling Using Majorization: SMACOF in
-  R} {Multidimensional scaling using majorization: Smacof in r}.{\BBCQ}
-\newblock
-\APACjournalVolNumPages{Journal of Statistical Software}{31}{3}{1–30}.
-\newblock
-\begin{APACrefURL}
-  \url{https://www.jstatsoft.org/index.php/jss/article/view/v031i03}
-  \end{APACrefURL}
-\newblock
-\begin{APACrefDOI} \doi{10.18637/jss.v031.i03} \end{APACrefDOI}
-\PrintBackRefs{\CurrentBib}
+\bibitem[Hilliger et~al.(2019)Hilliger, Miranda, Celis, and
+  P{\'e}rez-SanAgust{\'\i}n]{hilliger_evaluating_2019}
+Isabel Hilliger, Constanza Miranda, Sergio Celis, and Mar
+  P{\'e}rez-SanAgust{\'\i}n.
+\newblock Evaluating usage of an analytics tool to support continuous
+  curriculum improvement.
+\newblock In \emph{EC-TEL (Practitioner Proceedings)}, 2019.
 
-\bibitem [\protect \citeauthoryear {%
-Erwig%
-\ \BBA {} Gopinath%
-}{%
-Erwig%
-\ \BBA {} Gopinath%
-}{%
-{\protect \APACyear {2012}}%
-}]{%
-regex}
-\APACinsertmetastar {%
-regex}%
-\begin{APACrefauthors}%
-Erwig, M.%
-\BCBT {}\ \BBA {} Gopinath, R.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{2012}{}{}.
-\newblock
-{\BBOQ}\APACrefatitle {Explanations for Regular Expressions} {Explanations for
-  regular expressions}.{\BBCQ}
-\newblock
-\BIn{} J.~de Lara\ \BBA {} A.~Zisman\ (\BEDS), \APACrefbtitle {Fundamental
-  Approaches to Software Engineering} {Fundamental approaches to software
-  engineering}\ (\BPGS\ 394--408).
-\newblock
-\APACaddressPublisher{Berlin, Heidelberg}{Springer Berlin Heidelberg}.
-\PrintBackRefs{\CurrentBib}
+\bibitem[Romero and Ventura(2020)]{romero_educational_2020}
+Cristobal Romero and Sebastian Ventura.
+\newblock Educational data mining and learning analytics: An updated survey.
+\newblock \emph{Wiley Interdisciplinary Reviews: Data Mining and Knowledge
+  Discovery}, 10\penalty0 (3):\penalty0 e1355, 2020.
 
-\bibitem [\protect \citeauthoryear {%
-Hilliger%
-, Miranda%
-, Celis%
-\BCBL {}\ \BBA {} Pérez-SanAgustín%
-}{%
-Hilliger%
-\ \protect \BOthers {.}}{%
-{\protect \APACyear {2019}}%
-}]{%
-hilliger_evaluating_2019}
-\APACinsertmetastar {%
-hilliger_evaluating_2019}%
-\begin{APACrefauthors}%
-Hilliger, I.%
-, Miranda, C.%
-, Celis, S.%
-\BCBL {}\ \BBA {} Pérez-SanAgustín, M.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{2019}{}{}.
-\newblock
-{\BBOQ}\APACrefatitle {Evaluating {Usage} of an {Analytics} {Tool} to {Support}
-  {Continuous} {Curriculum} {Improvement}} {Evaluating {Usage} of an
-  {Analytics} {Tool} to {Support} {Continuous} {Curriculum}
-  {Improvement}}.{\BBCQ}
-\newblock
-\APACjournalVolNumPages{}{}{}{14}.
-\PrintBackRefs{\CurrentBib}
+\bibitem[Willcox and Huang(2017)]{willcox_network_2017}
+Karen~E Willcox and Luwen Huang.
+\newblock Network models for mapping educational data.
+\newblock \emph{Design Science}, 3, 2017.
 
-\bibitem [\protect \citeauthoryear {%
-Lan%
-, Studer%
-, Waters%
-\BCBL {}\ \BBA {} Baraniuk%
-}{%
-Lan%
-\ \protect \BOthers {.}}{%
-{\protect \APACyear {2014}}%
-}]{%
-lan_tag-aware_2014}
-\APACinsertmetastar {%
-lan_tag-aware_2014}%
-\begin{APACrefauthors}%
-Lan, A\BPBI S.%
-, Studer, C.%
-, Waters, A\BPBI E.%
-\BCBL {}\ \BBA {} Baraniuk, R\BPBI G.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{2014}{{\APACmonth{12}}}{}.
-\newblock
-{\BBOQ}\APACrefatitle {Tag-{Aware} {Ordinal} {Sparse} {Factor} {Analysis} for
-  {Learning} and {Content} {Analytics}} {Tag-{Aware} {Ordinal} {Sparse}
-  {Factor} {Analysis} for {Learning} and {Content} {Analytics}}.{\BBCQ}
-\newblock
-\APACjournalVolNumPages{arXiv:1412.5967 [cs, stat]}{}{}{}.
-\newblock
-\begin{APACrefURL} [{2021-09-22}]\url{http://arxiv.org/abs/1412.5967}
-  \end{APACrefURL}
-\newblock
-\APACrefnote{arXiv: 1412.5967}
-\PrintBackRefs{\CurrentBib}
+\bibitem[De~Leeuw and Mair(2009)]{jjs}
+Jan De~Leeuw and Patrick Mair.
+\newblock Multidimensional scaling using majorization: Smacof in r.
+\newblock \emph{Journal of statistical software}, 31:\penalty0 1--30, 2009.
 
-\bibitem [\protect \citeauthoryear {%
-Lan%
-, Waters%
-, Studer%
-\BCBL {}\ \BBA {} Baraniuk%
-}{%
-Lan%
-\ \protect \BOthers {.}}{%
-{\protect \APACyear {{\protect \bibnodate {}}}}%
-}]{%
-lan_sparse_nodate}
-\APACinsertmetastar {%
-lan_sparse_nodate}%
-\begin{APACrefauthors}%
-Lan, A\BPBI S.%
-, Waters, A\BPBI E.%
-, Studer, C.%
-\BCBL {}\ \BBA {} Baraniuk, R\BPBI G.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{{\protect \bibnodate {}}}{}{}.
-\newblock
-{\BBOQ}\APACrefatitle {Sparse {Factor} {Analysis} for {Learning} and {Content}
-  {Analytics}} {Sparse {Factor} {Analysis} for {Learning} and {Content}
-  {Analytics}}.{\BBCQ}
-\newblock
-\APACjournalVolNumPages{}{}{}{50}.
-\PrintBackRefs{\CurrentBib}
+\bibitem[Erwig and Gopinath(2012)]{regex}
+Martin Erwig and Rahul Gopinath.
+\newblock Explanations for regular expressions.
+\newblock In \emph{International Conference on Fundamental Approaches to
+  Software Engineering}, pages 394--408. Springer, 2012.
 
-\bibitem [\protect \citeauthoryear {%
-Romero%
-\ \BBA {} Ventura%
-}{%
-Romero%
-\ \BBA {} Ventura%
-}{%
-{\protect \APACyear {2020}}%
-}]{%
-romero_educational_2020}
-\APACinsertmetastar {%
-romero_educational_2020}%
-\begin{APACrefauthors}%
-Romero, C.%
-\BCBT {}\ \BBA {} Ventura, S.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{2020}{{\APACmonth{05}}}{}.
-\newblock
-{\BBOQ}\APACrefatitle {Educational data mining and learning analytics: {An}
-  updated survey} {Educational data mining and learning analytics: {An} updated
-  survey}.{\BBCQ}
-\newblock
-\APACjournalVolNumPages{WIREs Data Mining and Knowledge Discovery}{10}{3}{}.
-\newblock
-\begin{APACrefURL}
-  [{2021-09-22}]\url{https://onlinelibrary.wiley.com/doi/10.1002/widm.1355}
-  \end{APACrefURL}
-\newblock
-\begin{APACrefDOI} \doi{10.1002/widm.1355} \end{APACrefDOI}
-\PrintBackRefs{\CurrentBib}
+\bibitem[Blei et~al.(2003)Blei, Ng, and Jordan]{lda_pap}
+David~M Blei, Andrew~Y Ng, and Michael~I Jordan.
+\newblock Latent dirichlet allocation.
+\newblock \emph{the Journal of machine Learning research}, 3:\penalty0
+  993--1022, 2003.
 
-\bibitem [\protect \citeauthoryear {%
-Willcox%
-\ \BBA {} Huang%
-}{%
-Willcox%
-\ \BBA {} Huang%
-}{%
-{\protect \APACyear {2017}}%
-}]{%
-willcox_network_2017}
-\APACinsertmetastar {%
-willcox_network_2017}%
-\begin{APACrefauthors}%
-Willcox, K\BPBI E.%
-\BCBT {}\ \BBA {} Huang, L.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{2017}{}{}.
-\newblock
-{\BBOQ}\APACrefatitle {Network models for mapping educational data} {Network
-  models for mapping educational data}.{\BBCQ}
-\newblock
-\APACjournalVolNumPages{Design Science}{3}{}{e18}.
-\newblock
-\begin{APACrefURL}
-  [{2021-09-26}]\url{https://www.cambridge.org/core/product/identifier/S205347011700018X/type/journal_article}
-  \end{APACrefURL}
-\newblock
-\begin{APACrefDOI} \doi{10.1017/dsj.2017.18} \end{APACrefDOI}
-\PrintBackRefs{\CurrentBib}
+\bibitem[Burrows(2002)]{burrow}
+John Burrows.
+\newblock ‘delta’: a measure of stylistic difference and a guide to likely
+  authorship.
+\newblock \emph{Literary and linguistic computing}, 17\penalty0 (3):\penalty0
+  267--287, 2002.
 
-\bibitem [\protect \citeauthoryear {%
-Zipf%
-}{%
-Zipf%
-}{%
-{\protect \APACyear {2013}}%
-}]{%
-zipf2013psycho}
-\APACinsertmetastar {%
-zipf2013psycho}%
-\begin{APACrefauthors}%
-Zipf, G\BPBI K.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYear{2013}.
-\newblock
-\APACrefbtitle {The psycho-biology of language: An introduction to dynamic
-  philology} {The psycho-biology of language: An introduction to dynamic
+\bibitem[Zipf(2013)]{zipf2013psycho}
+George~Kingsley Zipf.
+\newblock \emph{The psycho-biology of language: An introduction to dynamic
   philology}.
-\newblock
-\APACaddressPublisher{}{Routledge}.
-\PrintBackRefs{\CurrentBib}
+\newblock Routledge, 2013.
 
 \end{thebibliography}

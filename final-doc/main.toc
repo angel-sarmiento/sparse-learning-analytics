@@ -16,4 +16,3 @@
 \contentsline {chapter}{\numberline {B}Session Info - R}{22}{appendix.1.B}%
 \contentsline {chapter}{\numberline {C}Example Code}{25}{appendix.1.C}%
 \contentsline {chapter}{\numberline {D}Mechanical Engineering and Environmental Engineering Plan of Study}{28}{appendix.1.D}%
-\contentsline {chapter}{References}{30}{appendix*.15}%
