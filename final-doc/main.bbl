@@ -6,8 +6,9 @@
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
 \bibitem[Lan et~al.(2014)Lan, Studer, Waters, and Baraniuk]{lan_tag-aware_2014}
-Andrew~S. Lan, Christoph Studer, Andrew~E. Waters, and Richard~G. Baraniuk,
-  2014.
+Andrew~S. Lan, Christoph Studer, Andrew~E. Waters, and Richard~G. Baraniuk.
+\newblock Tag-aware ordinal sparse factor analysis for learning and content
+  analytics, 2014.
 
 \bibitem[Joachims and EDU(2015)]{lan_sparse_nodate}
 Thorsten Joachims and CORNELL EDU.
