@@ -10,7 +10,7 @@ output:
 params:
   department: 
     label: "Department"
-    value: "Computer Science"
+    value: "Data Science and Business Analytics"
     choices: 
     - "Data Science and Business Analytics"
     - "Mechanical Engineering and Environmental Engineering"
@@ -54,7 +54,8 @@ if(!dir.exists(here("img/"))) {
 full_outl <- data %>% 
   clean_columns() %>% 
   transform_course_data(data) %>% 
-  filter(Department_Name == params$department)
+  filter(Department_Name == params$department) %>% 
+  filter(Is_Active == 1)
 ```
 
 # MCA with Bigrams {.tabset} 
@@ -94,14 +95,22 @@ options(ggrepel.max.overlaps = Inf)
 factoextra::fviz_ca_biplot(bigram_ca, 
                            geom.row = c("text"),
                            geom.col = c("point", "text"),
-                           row.var = "steelblue",
-                           col.row = "black",
-                           col.col = "steelblue",
+                           row.var = "#532d8e",
+                           col.row = "#54565a",
+                           col.col = "#532d8e",
                            labelsize = 2,
                            select.col = list(contrib = 100),
                            select.row = list(contrib = 30),
                            alpha.row = 0.3, repel = T,
                            title = "DSBA Curriculum - Biplot")
+
+ggsave(paste0("final-doc/Content/images/", 
+              ifelse(
+                params$department == "Computer Science",
+                "mca_bp_cs_1.png",
+                "mca_bp_1.png"
+              )))
+
 
 ggsave('img/mca_bp_1.png', dpi = 300)
 
@@ -114,15 +123,23 @@ ggsave('img/mca_bp_1.png', dpi = 300)
 factoextra::fviz_ca_biplot(bigram_ca, 
                            geom.row = c("point","text"),
                            geom.col = c("point", "text"),
-                           row.var = "steelblue",
-                           col.row = "black",
-                           col.col = "steelblue",
+                           row.var = "#532d8e",
+                           col.row = "#54565a",
+                           col.col = "#532d8e",
                            labelsize = 2,
                            select.col = list(cos2 = .10),
                            # select.row = list(cos2 = .12),
                            alpha.row = 0.3, repel = T,
                            axes = c(3, 4),
                            title = "DSBA Curriculum - Biplot")
+
+ggsave(paste0("final-doc/Content/images/", 
+              ifelse(
+                params$department == "Computer Science",
+                "mca_bp_cs_2.png",
+                "mca_bp_2.png"
+              )))
+
 
 ggsave('img/mca_bp_2.png', dpi = 300)
 ```
@@ -151,15 +168,23 @@ mini_ca <- FactoMineR::CA(mini_df,
 factoextra::fviz_ca_biplot(mini_ca, 
                            geom.row = c("point","text"),
                            geom.col = c("point", "text"),
-                           row.var = "steelblue",
-                           col.row = "black",
-                           col.col = "steelblue",
+                           row.var = "#532d8e",
+                           col.row = "#54565a",
+                           col.col = "#532d8e",
                            labelsize = 2,
                            select.col = list(contrib = 80),
                            select.row = list(contrib = 30),
                            alpha.row = 0.3, repel = T,
                            axes = c(1, 2),
                            title = "DSBA Curriculum - Biplot")
+
+
+ggsave(paste0("final-doc/Content/images/", 
+              ifelse(
+                params$department == "Computer Science",
+                "mca_bp_cs_3.png",
+                "mca_bp_3.png"
+              )))
 
 ggsave('img/mca_bp_3.png', dpi = 300)
 
@@ -173,15 +198,22 @@ ggsave('img/mca_bp_3.png', dpi = 300)
 factoextra::fviz_ca_biplot(mini_ca, 
                            geom.row = c("point","text"),
                            geom.col = c("point", "text"),
-                           row.var = "steelblue",
-                           col.row = "black",
-                           col.col = "steelblue",
+                           row.var = "#532d8e",
+                           col.row = "#54565a",
+                           col.col = "#532d8e",
                            labelsize = 2,
                            select.col = list(contrib = 80),
                            select.row = list(contrib = 30),
                            alpha.row = 0.3, repel = T,
                            axes = c(3, 4),
                            title = "DSBA Curriculum - Biplot")
+
+ggsave(paste0("final-doc/Content/images/", 
+              ifelse(
+                params$department == "Computer Science",
+                "mca_bp_cs_4.png",
+                "mca_bp_4.png"
+              )))
 
 ggsave('img/mca_bp_4.png', dpi = 300)
 

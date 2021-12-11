@@ -10,7 +10,7 @@ output:
 params:
   department: 
     label: "Department"
-    value: "Computer Science"
+    value: "Data Science and Business Analytics"
     choices: 
     - "Data Science and Business Analytics"
     - "Mechanical Engineering and Environmental Engineering"
@@ -45,7 +45,7 @@ library(widyr)
 library(igraph)
 library(ggraph)
 ptsize <- 2
-legends <- TRUE
+legends <- FALSE
 dist_lmt <- 3.4
 library(readr, quietly = T)
 
@@ -55,6 +55,10 @@ data <- read_csv(here("data/courses-list-fpu.csv"))
 ```
 
 ```{r Running the function to get the transformed data}
+classes2remove <- c("FIN_2001", "FIN2002", "EGN_4941", "COP_3337", "CAP_4739", "EEE_5935", "CNT_3502", 
+                    "COP_3834C")
+
+
 filter_regex = ""
 replace_regex = ""
 filtering_string <- regex(paste0("^Week|\\s{2}|^\\s{1}|^Quiz|^Chapter|^Case|^http|Ch.|^Incoterms|Exam|Presentations|www|", 
@@ -92,7 +96,8 @@ full_outl <- main_outl_df %>% rbind(side_outl_new)
 
 # Filtering to the department
 full_outl <- full_outl %>% 
-  filter(Department_Name == params$department)
+  filter(Department_Name == params$department) %>% 
+  filter(Is_Active == 1)
   # filter(Department_Name == "Computer Science")
   # filter(Department_Name == "Data Science and Business Analytics")
 
@@ -175,7 +180,8 @@ The LDA model we have seems to be able to spread the topics pretty well. But the
 course_top_terms <- course_topics %>% 
   filter(!is.na(term)) %>% 
   group_by(topic) %>%
-  slice_max(beta, n = 9) %>% 
+  arrange(-beta) %>% 
+  slice_head(n = 30) %>% 
   ungroup() %>%
   arrange(topic, -beta)
 
@@ -184,10 +190,19 @@ course_top_terms %>%
   ggplot(aes(beta, term, fill = factor(topic))) +
   geom_col(show.legend = FALSE) +
   facet_wrap(~ topic, scales = "free") + 
+  scale_fill_manual(values = c("#532d8e", "#2E1B46", "#B1B3B5", "#54565a", "#165C7D", "#005E5D")) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
   
   scale_y_reordered() 
+
+# This will save it to the latex document directory so I do not have to manually move everything 
+ggsave(paste0("final-doc/Content/images/", 
+              ifelse(
+                params$department == "Computer Science",
+                "lda_cs.png",
+                "lda.png"
+              )), dpi = 300)
 
 ggsave("img/lda.png", dpi = 300)
 ```
@@ -217,8 +232,8 @@ dist_euc %>%
   filter(distance < dist_lmt) %>%
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
-  geom_edge_link(aes(edge_alpha = distance), show.legend = legends) +
-  geom_node_point(color = "lightblue", size = ptsize) +
+  geom_edge_link(aes(edge_alpha = -distance), show.legend = legends) +
+  geom_node_point(color = "#532d8e", size = ptsize) +
   geom_node_text(aes(label = name), repel = TRUE) +
   theme_void()+ 
   labs(title = "Distance Plot: Euclidean")
@@ -236,8 +251,8 @@ dist_manh %>%
   filter(distance < 15) %>%
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
-  geom_edge_link(aes(edge_alpha = distance), show.legend = legends) +
-  geom_node_point(color = "lightblue", size = ptsize) +
+  geom_edge_link(aes(edge_alpha = -distance), show.legend = legends) +
+  geom_node_point(color = "#532d8e", size = ptsize) +
   geom_node_text(aes(label = name), repel = TRUE) +
   theme_void() + 
   labs(title = "Distance Plot: Manhattan")
@@ -256,8 +271,8 @@ sim_cos %>%
   filter(distance < ifelse(params$department == "Computer Science", 0.9, 0.02)) %>% 
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
-  geom_edge_link(aes(edge_alpha = distance), show.legend = legends) +
-  geom_node_point(color = "lightblue", size = ptsize) +
+  geom_edge_link(aes(edge_alpha = -distance), show.legend = legends) +
+  geom_node_point(color = "#532d8e", size = ptsize) +
   geom_node_text(aes(label = name), repel = TRUE) +
   theme_void() + 
   labs(title = "1 - Cosine Similarity Plot: Bigrams")
@@ -276,8 +291,8 @@ delta_brw %>%
   filter(delta < 0.1) %>% 
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
-  geom_edge_link(aes(edge_alpha = delta), show.legend = legends) +
-  geom_node_point(color = "lightblue", size = ptsize) +
+  geom_edge_link(aes(edge_alpha = -delta), show.legend = legends) +
+  geom_node_point(color = "#532d8e", size = ptsize) +
   geom_node_text(aes(label = name), repel = TRUE) +
   theme_void() + 
   labs(title = "Burrows Delta")
@@ -294,8 +309,8 @@ delta_lnr %>%
   filter(delta < 0.029) %>% 
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
-  geom_edge_link(aes(edge_alpha = delta), show.legend = legends) +
-  geom_node_point(color = "lightblue", size = ptsize) +
+  geom_edge_link(aes(edge_alpha = -delta), show.legend = legends) +
+  geom_node_point(color = "#532d8e", size = ptsize) +
   geom_node_text(aes(label = name), repel = TRUE) +
   theme_void() + 
   labs(title = "Argamon's Linear Delta")
@@ -348,11 +363,19 @@ cos_course %>%
   filter(distance < 0.02) %>% 
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
-  geom_edge_link(aes(edge_alpha = distance), show.legend = FALSE) +
-  geom_node_point(color = "lightblue", size = ptsize) +
+  geom_edge_link(aes(edge_alpha = -distance), show.legend = FALSE) +
+  geom_node_point(color = "#532d8e", size = ptsize) +
   geom_node_text(aes(label = name), repel = TRUE) +
   theme_void() + 
   labs(title = "1 - Cosine Similarity Plot: Full Desc.")
+
+
+ggsave(paste0("final-doc/Content/images/", 
+              ifelse(
+                params$department == "Computer Science",
+                "cos_cs.png",
+                "cos.png"
+              )), dpi = 300)
 
 ggsave("img/cos.png", dpi = 300)
 
@@ -378,11 +401,18 @@ jac_course %>%
   filter(distance < 0.04) %>% 
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
-  geom_edge_link(aes(edge_alpha = distance), show.legend = FALSE) +
-  geom_node_point(color = "lightblue", size = ptsize) +
+  geom_edge_link(aes(edge_alpha = -distance), show.legend = FALSE) +
+  geom_node_point(color = "#532d8e", size = ptsize) +
   geom_node_text(aes(label = name), repel = TRUE) +
   theme_void() + 
   labs(title = "1 - Jaccard Similarity Plot: Full Desc.")
+
+ggsave(paste0("final-doc/Content/images/", 
+              ifelse(
+                params$department == "Computer Science",
+                "jac_cs.png",
+                "jac.png"
+              )), dpi = 300)
 
 ggsave("img/jac.png", dpi = 300)
 ```
@@ -486,6 +516,13 @@ ggplot() +
   labs(title = "MDS with 1 - Cosine Similarity") +
   theme(legend.position = "")
 
+ggsave(paste0("final-doc/Content/images/", 
+              ifelse(
+                params$department == "Computer Science",
+                "cos_mds_cs.png",
+                "cos_mds.png"
+              )), dpi = 300)
+
 ggsave("img/cos_mds.png", dpi = 300) 
  
 ```
@@ -507,6 +544,13 @@ ggplot() +
   theme_minimal() +
   labs(title = "MDS with 1 - Jaccard Similarity") +
   theme(legend.position = "")
+
+ggsave(paste0("final-doc/Content/images/", 
+              ifelse(
+                params$department == "Computer Science",
+                "jac_mds_cs.png",
+                "jac_mds.png"
+              )), dpi = 300)
 
 ggsave("img/jac_mds.png", dpi = 300) 
  

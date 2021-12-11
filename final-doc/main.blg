@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99d (TeX Live 2021)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: unsrtnat.bst
+Database file #1: Bibliography/project-proposal.bib
+Warning--empty journal in reddy_learning_nodate
+Warning--empty year in reddy_learning_nodate
+Warning--empty year in reddy_learning_nodate
+You've used 16 entries,
+            2481 wiz_defined-function locations,
+            641 strings with 7548 characters,
+and the built_in function-call counts, 6095 in all, are:
+= -- 483
+> -- 338
+< -- 11
++ -- 131
+- -- 98
+* -- 452
+:= -- 970
+add.period$ -- 48
+call.type$ -- 16
+change.case$ -- 30
+chr.to.int$ -- 15
+cite$ -- 19
+duplicate$ -- 323
+empty$ -- 571
+format.name$ -- 128
+if$ -- 1297
+int.to.chr$ -- 2
+int.to.str$ -- 17
+missing$ -- 17
+newline$ -- 87
+num.names$ -- 48
+pop$ -- 161
+preamble$ -- 1
+purify$ -- 16
+quote$ -- 0
+skip$ -- 188
+stack$ -- 0
+substring$ -- 214
+swap$ -- 51
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 106
+warning$ -- 3
+while$ -- 47
+width$ -- 0
+write$ -- 205
+(There were 3 warnings)
