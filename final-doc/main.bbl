@@ -1,4 +1,4 @@
-\begin{thebibliography}{11}
+\begin{thebibliography}{16}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -41,10 +41,10 @@ Cristobal Romero and Sebastian Ventura.
 \newblock \emph{Wiley Interdisciplinary Reviews: Data Mining and Knowledge
   Discovery}, 10\penalty0 (3):\penalty0 e1355, 2020.
 
-\bibitem[Willcox and Huang(2017)]{willcox_network_2017}
+\bibitem[Willcox and Huang(2017{\natexlab{a}})]{willcox_network_2017}
 Karen~E Willcox and Luwen Huang.
 \newblock Network models for mapping educational data.
-\newblock \emph{Design Science}, 3, 2017.
+\newblock \emph{Design Science}, 3, 2017{\natexlab{a}}.
 
 \bibitem[De~Leeuw and Mair(2009)]{jjs}
 Jan De~Leeuw and Patrick Mair.
@@ -75,5 +75,39 @@ George~Kingsley Zipf.
 \newblock \emph{The psycho-biology of language: An introduction to dynamic
   philology}.
 \newblock Routledge, 2013.
+
+\bibitem[Ros{\'e} et~al.(2019)Ros{\'e}, McLaughlin, Liu, and
+  Koedinger]{rose_explanatory_2019}
+Carolyn~P Ros{\'e}, Elizabeth~A McLaughlin, Ran Liu, and Kenneth~R Koedinger.
+\newblock Explanatory learner models: Why machine learning (alone) is not the
+  answer.
+\newblock \emph{British Journal of Educational Technology}, 50\penalty0
+  (6):\penalty0 2943--2958, 2019.
+
+\bibitem[Lang et~al.(2017)Lang, Siemens, Wise, and
+  Gasevic]{columbia_university_usa_handbook_2017}
+Charles Lang, George Siemens, Alyssa Wise, and Dragan Gasevic.
+\newblock \emph{Handbook of learning analytics}.
+\newblock SOLAR, Society for Learning Analytics and Research New York, NY, USA,
+  2017.
+
+\bibitem[Ifenthaler and Yau(2020)]{ifenthaler_utilising_2020}
+Dirk Ifenthaler and Jane Yin-Kim Yau.
+\newblock Utilising learning analytics to support study success in higher
+  education: a systematic review.
+\newblock \emph{Educational Technology Research and Development}, 68\penalty0
+  (4):\penalty0 1961--1990, 2020.
+
+\bibitem[Reddy et~al.()Reddy, Labutov, and Joachims]{reddy_learning_nodate}
+Siddharth Reddy, Igor Labutov, and Thorsten Joachims.
+\newblock Learning {Representations} of {Student} {Knowledge} and {Educational}
+  {Content}.
+\newblock page~14.
+
+\bibitem[Willcox and Huang(2017{\natexlab{b}})]{willcox_mapping_nodate}
+Karen~E Willcox and Luwen Huang.
+\newblock Mapping the cdio curriculum with network models.
+\newblock In \emph{Preprint) CDIO, 13th International CDIO Conference},
+  2017{\natexlab{b}}.
 
 \end{thebibliography}

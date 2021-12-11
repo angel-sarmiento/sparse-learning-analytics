@@ -3,44 +3,48 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 The style file: unsrtnat.bst
 Database file #1: Bibliography/project-proposal.bib
-You've used 11 entries,
+Warning--empty journal in reddy_learning_nodate
+Warning--empty year in reddy_learning_nodate
+Warning--empty year in reddy_learning_nodate
+You've used 16 entries,
             2481 wiz_defined-function locations,
-            616 strings with 6540 characters,
-and the built_in function-call counts, 4152 in all, are:
-= -- 327
-> -- 233
-< -- 8
-+ -- 90
-- -- 68
-* -- 298
-:= -- 666
-add.period$ -- 32
-call.type$ -- 11
-change.case$ -- 20
-chr.to.int$ -- 11
-cite$ -- 11
-duplicate$ -- 220
-empty$ -- 390
-format.name$ -- 89
-if$ -- 883
-int.to.chr$ -- 1
-int.to.str$ -- 12
-missing$ -- 11
-newline$ -- 61
-num.names$ -- 33
-pop$ -- 107
+            640 strings with 7473 characters,
+and the built_in function-call counts, 6083 in all, are:
+= -- 480
+> -- 338
+< -- 11
++ -- 131
+- -- 98
+* -- 452
+:= -- 967
+add.period$ -- 47
+call.type$ -- 16
+change.case$ -- 29
+chr.to.int$ -- 15
+cite$ -- 19
+duplicate$ -- 323
+empty$ -- 571
+format.name$ -- 128
+if$ -- 1294
+int.to.chr$ -- 2
+int.to.str$ -- 17
+missing$ -- 17
+newline$ -- 86
+num.names$ -- 48
+pop$ -- 161
 preamble$ -- 1
-purify$ -- 11
+purify$ -- 16
 quote$ -- 0
-skip$ -- 137
+skip$ -- 190
 stack$ -- 0
-substring$ -- 138
-swap$ -- 34
-text.length$ -- 1
+substring$ -- 214
+swap$ -- 51
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 74
-warning$ -- 0
-while$ -- 32
+type$ -- 106
+warning$ -- 3
+while$ -- 47
 width$ -- 0
-write$ -- 142
+write$ -- 203
+(There were 3 warnings)
