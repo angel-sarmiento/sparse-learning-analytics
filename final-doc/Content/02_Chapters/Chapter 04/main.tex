@@ -32,7 +32,7 @@ shows a biplot with the third and fourth latent dimensions
 \begin{figure}[H]
 \centering
 
-\includegraphics[width = 1\textwidth, height = .9\textheight]{Content/images/mca_bp_2.png}
+\includegraphics[width = 1\textwidth, height = .9\textheight]{Content/images/mca_bp_3.png}
 \caption{Biplot of the DSBA curriculum at FPU,  the top 100 topics and top 30 courses in terms of contribution to the proportion of variance are plotted.}
 \label{fig:mca_2}
 \end{figure}
@@ -40,7 +40,7 @@ shows a biplot with the third and fourth latent dimensions
 Figure \ref{fig:mca_2} shows the potential groupings formed with this methodology.  In the central cluster of courses, a majority of the "MAN" courses occupy 
 the second quadrant while the courses heavier in math and programming like statistical learning (STA 3241),  quantitative methods (QMB 3200), and others show 
 up in the first quadrant.  The further from the center, the more "niche" the courses (typically business courses like ENT 2112 or ACG 2021) and course topics are.  
-This can potentially be used in the future as a backbone to the alignment of course work to corresponding concentrations in the future or as the validation for the 
+In the future, this can be used as a backbone to the alignment of course work to corresponding concentrations in the future or as the validation for the 
 distance approach discussed later on. 
 
 The plot above only shows a very small subset of the bigrams created from the course outlines since using all of them would not be legible.  Despite this,  
@@ -138,9 +138,9 @@ line connecting two courses, the further the distance between them.
 One common trait that became prevalent was the existence of common strings at the end of certain courses.  A majority of the courses that meet a writing 
 requirement have the same course descriptions detailing:
 
- \textit{"This course meets communication/writing-intensive requirements (W)"} 
+ \textit{"This course meets communication/writing-intensive requirements (W)".} 
  
-This seems to cause certain courses to be grouped together (have a smaller distance between them).  This is relatively consistent across the catalog and can 
+It causes certain courses to be grouped together (have a smaller distance between them).  This is relatively consistent across the catalog and can 
 be seen at the bottom of the plot on Figure \ref{fig:cos} with courses like ECO 2013. 
 
 These distance matrices can then be used to apply a method like MDS to separate courses into clusters in latent spaces similar to section \ref{ca}. Ideally, 
@@ -166,7 +166,7 @@ Figure \ref{fig:tile2} shows the same distance metrics in Figure \ref{fig:tile} 
 \end{figure}
 
 From these plots we see that a grouping separation does not occur.  A majority of the courses group together in the middle within forming those defined 
-groupings that one might want to see. A potential reason for this may be the choice of distance metrics. in the future, other distance metrics might prove 
+groupings that one might want to see. A reason for this may be the choice of distance metrics. In the future, other distance metrics can be proven to be  
 better for providing the segmentation necessary to differentiate the courses using this full course description approach.  Another potential reason could be 
 the size of q-grams used to compute the distances for each of the course descriptions: it is possible that different sized substrings might yield better results 
 when computing the distance matrices. Increasing the size of the q-grams could potentially give the MDS dimensions more "context" from the larger substrings 
