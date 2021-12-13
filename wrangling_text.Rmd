@@ -55,7 +55,8 @@ full_outl <- data %>%
   clean_columns() %>% 
   transform_course_data(data) %>% 
   filter(Department_Name == params$department) %>% 
-  filter(Is_Active == 1)
+  filter(Is_Active == 1) %>% 
+  filter(Course_ID != "FIN_2000")
 ```
 
 # MCA with Bigrams {.tabset} 
@@ -98,10 +99,12 @@ factoextra::fviz_ca_biplot(bigram_ca,
                            row.var = "#532d8e",
                            col.row = "#54565a",
                            col.col = "#532d8e",
+                           arrow = c("FALSE", "FALSE"),
                            labelsize = 2,
                            select.col = list(contrib = 100),
                            select.row = list(contrib = 30),
-                           alpha.row = 0.3, repel = T,
+                           alpha.row = 0.3,
+                           repel = T,
                            title = "DSBA Curriculum - Biplot")
 
 ggsave(paste0("final-doc/Content/images/", 

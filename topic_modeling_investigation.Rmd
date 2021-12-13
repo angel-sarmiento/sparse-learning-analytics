@@ -55,7 +55,7 @@ data <- read_csv(here("data/courses-list-fpu.csv"))
 ```
 
 ```{r Running the function to get the transformed data}
-classes2remove <- c("FIN_2001", "FIN2002", "EGN_4941", "COP_3337", "CAP_4739", "EEE_5935", "CNT_3502", 
+classes2remove <- c("FIN2000", "EGN_4941", "COP_3337", "CAP_4739", "EEE_5935", "CNT_3502", 
                     "COP_3834C")
 
 
@@ -97,7 +97,8 @@ full_outl <- main_outl_df %>% rbind(side_outl_new)
 # Filtering to the department
 full_outl <- full_outl %>% 
   filter(Department_Name == params$department) %>% 
-  filter(Is_Active == 1)
+  filter(Is_Active == 1) %>% 
+  filter(Course_ID != "FIN_2000")
   # filter(Department_Name == "Computer Science")
   # filter(Department_Name == "Data Science and Business Analytics")
 
